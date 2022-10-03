@@ -18,7 +18,7 @@
 	"type": "module",
 	"module": "./dist/esm/mime-type.min.js",
   "files": [
-    "src/"
+    "dist/"
   ],
 	"keywords": [
     "content-type",
