@@ -1,7 +1,7 @@
 {
   "name": "@d1g1tal/mime-type",
   "description": "Parses, serializes, and manipulates MIME types, according to the WHATWG MIME Sniffing Standard",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "maintainers": [
     {
