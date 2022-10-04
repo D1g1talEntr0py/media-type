@@ -123,4 +123,4 @@ export default class MIMEType {
 	get [Symbol.toStringTag]() {
 		return 'MIMEType';
 	}
-};
+}

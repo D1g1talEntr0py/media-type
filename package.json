@@ -1,7 +1,7 @@
 {
   "name": "@d1g1tal/mime-type",
   "description": "Parses, serializes, and manipulates MIME types, according to the WHATWG MIME Sniffing Standard",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
 	"maintainers": [{
 		"name": "Jason DiMeo",
@@ -16,10 +16,13 @@
     "access": "public"
   },
 	"type": "module",
-	"module": "./dist/esm/mime-type.min.js",
-  "files": [
-    "dist/"
-  ],
+	"exports": {
+		".": {
+			"import": "./index.js",
+			"default": "./dist/mime-type.min.js" 
+		}
+	},
+  "files": [ "index.js", "/src", "dist/" ],
 	"keywords": [
     "content-type",
     "mime type",
@@ -28,8 +31,7 @@
     "whatwg"
   ],
   "scripts": {
-		"build": "rimraf dist/esm && esbuild src/mime-type.js --bundle --target=es2022 --format=esm --outfile=dist/esm/mime-type.js && esbuild src/mime-type.js --bundle --sourcemap --minify --target=es2020 --format=esm --outfile=dist/esm/mime-type.min.js",
-		"build:browser": "rimraf dist/browser && esbuild src/mime-type.js --bundle --platform=browser --global-name=MIMEType --footer:js='window.MIMEType = MIMEType.default;' --outfile=dist/browser/mime-type.js && esbuild src/mime-type.js --bundle --sourcemap --minify --platform=browser --global-name=MIMEType --footer:js='window.MIMEType = MIMEType.default;' --outfile=dist/browser/mime-type.min.js",
+		"build": "rimraf dist && esbuild src/mime-type.js --bundle --platform=browser --global-name=MIMEType --footer:js='window.MIMEType = MIMEType.default;' --outfile=dist/mime-type.js && esbuild src/mime-type.js --bundle --sourcemap --minify --platform=browser --global-name=MIMEType --footer:js='window.MIMEType = MIMEType.default;' --outfile=dist/mime-type.min.js",
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
     "coverage": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "pretest": "node scripts/get-latest-platform-tests.js"
