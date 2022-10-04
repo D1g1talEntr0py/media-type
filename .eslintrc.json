@@ -11,6 +11,8 @@
 		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
-	"rules": {},
+	"rules": {
+		"no-constant-condition": "off"
+	},
 	"overrides": []
 }

@@ -1,7 +1,7 @@
 {
   "name": "@d1g1tal/mime-type",
   "description": "Parses, serializes, and manipulates MIME types, according to the WHATWG MIME Sniffing Standard",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "maintainers": [
     {
@@ -18,19 +18,14 @@
     "access": "public"
   },
   "type": "module",
-	"types": "index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./index.js",
-      "default": "./dist/mime-type.min.js"
-    }
-  },
+	"types": "./index.d.ts",
+	"module": "./index.js",
   "browser": "./dist/mime-type.min.js",
   "files": [
     "index.js",
 		"index.d.ts",
     "/src",
-    "dist/"
+    "/dist"
   ],
   "keywords": [
     "content-type",

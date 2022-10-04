@@ -2,9 +2,11 @@ import { solelyContainsHTTPTokenCodePoints } from './utils.js';
 /** @typedef { import('./mime-type.js').default } MIMEType */
 
 /**
+ * A function that serializes the provided {@link MIMEType} to a string.
  * 
- * @param {MIMEType} mimeType 
- * @returns {string}
+ * @module serialize
+ * @param {MIMEType} mimeType The MIME type to serialize.
+ * @returns {string} The serialized MIME type.
  */
 const serialize = (mimeType) => {
 	let serialization = `${mimeType.type}/${mimeType.subtype}`;

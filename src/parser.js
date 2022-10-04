@@ -9,9 +9,11 @@ import {
 } from './utils.js';
 
 /**
+ * Function to parse a MIME type.
  * 
- * @param {string} input 
- * @returns {{ type: string, subtype: string, parameters: Map }}
+ * @module parser
+ * @param {string} input The MIME type to parse
+ * @returns {{ type: string, subtype: string, parameters: Map.<string, string> }} An object populated with the parsed MIME type properties and any parameters.
  */
 const parse = (input) => {
 	input = removeLeadingAndTrailingHTTPWhitespace(input);
