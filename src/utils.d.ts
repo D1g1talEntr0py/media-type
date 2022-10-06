@@ -47,6 +47,6 @@ export function asciiLowercase(string: string): string;
  *
  * @param {string} input The string to process.
  * @param {number} position The starting position.
- * @returns {[string, number]} An array that includes the resulting string and updated position.
+ * @returns {Array<string | number>} An array that includes the resulting string and updated position.
  */
-export function collectAnHTTPQuotedString(input: string, position: number): [string, number];
+export function collectAnHTTPQuotedString(input: string, position: number): Array<string | number>;

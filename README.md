@@ -4,7 +4,7 @@ This package will parse [MIME types](https://mimesniff.spec.whatwg.org/#understa
 This version is using ES Modules instead of commonJS.
 
 ```js
-import MIMEType from '@d1g1tal/mime-type';
+import { MIMEType } from '@d1g1tal/mime-type';
 
 const mimeType = new MIMEType(`Text/HTML;Charset="utf-8"`);
 
@@ -93,8 +93,8 @@ mimeType.parameters.set("@", "x");
 If you want primitives on which to build your own API, you can get direct access to the parsing and serialization algorithms as follows:
 
 ```js
-import parse from '@d1g1tal/mime-type/parser.js';
-import serialize from '@d1g1tal/mime-type/serializer.js';
+import { parse } from '@d1g1tal/mime-type';
+import { serialize } from '@d1g1tal/mime-type';
 ```
 
 `parse(string)` returns an object containing the `type` and `subtype` strings, plus `parameters`, which is a `Map`. This is roughly our equivalent of the spec's [MIME type record](https://mimesniff.spec.whatwg.org/#mime-type). If parsing fails, it instead returns `null`.

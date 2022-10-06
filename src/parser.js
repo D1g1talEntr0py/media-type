@@ -1,26 +1,22 @@
 import {
-  removeLeadingAndTrailingHTTPWhitespace,
-  removeTrailingHTTPWhitespace,
-  isHTTPWhitespaceChar,
-  solelyContainsHTTPTokenCodePoints,
-  solelyContainsHTTPQuotedStringTokenCodePoints,
-  asciiLowercase,
-  collectAnHTTPQuotedString
+	asciiLowercase,
+	collectAnHTTPQuotedString, isHTTPWhitespaceChar, removeLeadingAndTrailingHTTPWhitespace,
+	removeTrailingHTTPWhitespace, solelyContainsHTTPQuotedStringTokenCodePoints, solelyContainsHTTPTokenCodePoints
 } from './utils.js';
 
 /**
  * Function to parse a MIME type.
- * 
+ *
  * @module parser
  * @param {string} input The MIME type to parse
- * @returns {{ type: string, subtype: string, parameters: Map.<string, string> }} An object populated with the parsed MIME type properties and any parameters.
+ * @returns {{ type: string, subtype: string, parameters: Map<string, string> }} An object populated with the parsed MIME type properties and any parameters.
  */
 const parse = (input) => {
 	input = removeLeadingAndTrailingHTTPWhitespace(input);
 
 	let position = 0;
-	let type = "";
-	while (position < input.length && input[position] !== "/") {
+	let type = '';
+	while (position < input.length && input[position] !== '/') {
 		type += input[position];
 		++position;
 	}
@@ -36,8 +32,8 @@ const parse = (input) => {
 	// Skips past "/"
 	++position;
 
-	let subtype = "";
-	while (position < input.length && input[position] !== ";") {
+	let subtype = '';
+	while (position < input.length && input[position] !== ';') {
 		subtype += input[position];
 		++position;
 	}
@@ -62,15 +58,15 @@ const parse = (input) => {
 			++position;
 		}
 
-		let parameterName = "";
-		while (position < input.length && input[position] !== ";" && input[position] !== "=") {
+		let parameterName = '';
+		while (position < input.length && input[position] !== ';' && input[position] !== '=') {
 			parameterName += input[position];
 			++position;
 		}
 		parameterName = asciiLowercase(parameterName);
 
 		if (position < input.length) {
-			if (input[position] === ";") {
+			if (input[position] === ';') {
 				continue;
 			}
 
@@ -79,22 +75,22 @@ const parse = (input) => {
 		}
 
 		let parameterValue = null;
-		if (input[position] === "\"") {
+		if (input[position] === '"') {
 			[parameterValue, position] = collectAnHTTPQuotedString(input, position);
 
-			while (position < input.length && input[position] !== ";") {
+			while (position < input.length && input[position] !== ';') {
 				++position;
 			}
 		} else {
-			parameterValue = "";
-			while (position < input.length && input[position] !== ";") {
+			parameterValue = '';
+			while (position < input.length && input[position] !== ';') {
 				parameterValue += input[position];
 				++position;
 			}
 
 			parameterValue = removeTrailingHTTPWhitespace(parameterValue);
 
-			if (parameterValue === "") {
+			if (parameterValue === '') {
 				continue;
 			}
 		}

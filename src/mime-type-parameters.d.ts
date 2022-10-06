@@ -53,9 +53,10 @@ export default class MIMETypeParameters {
     /**
      * Removes the MIME type parameter using the specified name.
      *
+     * @param {string} name The name of the MIME type parameter to delete.
      * @returns {boolean} true if the parameter existed and has been removed, or false if the parameter does not exist.
      */
-    delete(name: any): boolean;
+    delete(name: string): boolean;
     /**
      * Executes a provided function once per each name/value pair in the MIMETypeParameters, in insertion order.
      *
@@ -66,24 +67,25 @@ export default class MIMETypeParameters {
     /**
      * Returns an iterable of parameter names.
      *
-     * @returns {IterableIterator.<string>} The {@link IterableIterator} of MIME type parameter names.
+     * @returns {IterableIterator<string>} The {@link IterableIterator} of MIME type parameter names.
      */
     keys(): IterableIterator<string>;
     /**
      * Returns an iterable of parameter values.
      *
-     * @returns {IterableIterator.<string>} The {@link IterableIterator} of MIME type parameter values.
+     * @returns {IterableIterator<string>} The {@link IterableIterator} of MIME type parameter values.
      */
     values(): IterableIterator<string>;
     /**
      * Returns an iterable of name, value pairs for every parameter entry in the MIME type parameters.
      *
-     * @returns {IterableIterator.<[string, string]>}
+     * @returns {IterableIterator<Array<Array<string>>>} The MIME type parameter entries.
      */
-    entries(): IterableIterator<[string, string]>;
+    entries(): IterableIterator<Array<Array<string>>>;
     /**
      * A method that returns the default iterator for the {@link MIMETypeParameters}. Called by the semantics of the for-of statement.
-     * @returns {Iterator.<string, string, undefined>} The {@link Symbol.iterator} for the MIME type parameters.
+     *
+     * @returns {Iterator<string, string, undefined>} The {@link Symbol.iterator} for the MIME type parameters.
      */
     [Symbol.iterator](): Iterator<string, string, undefined>;
 }

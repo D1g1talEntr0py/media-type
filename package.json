@@ -1,7 +1,7 @@
 {
   "name": "@d1g1tal/mime-type",
   "description": "Parses, serializes, and manipulates MIME types, according to the WHATWG MIME Sniffing Standard",
-  "version": "3.0.8",
+  "version": "3.1.0",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "maintainers": [
     {
@@ -18,12 +18,21 @@
     "access": "public"
   },
   "type": "module",
-	"types": "./index.d.ts",
-	"module": "./index.js",
-  "browser": "./dist/mime-type.min.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "default": "./dist/mime-type.min.js"
+    }
+  },
+  "browser": {
+    "mime-type.js": "./dist/mime-type.js",
+    "mime-type.min.js": "./dist/mime-type.min.js",
+    "mime-type.min.js.map": "./dist/mime-type.min.js.map"
+  },
   "files": [
     "index.js",
-		"index.d.ts",
+    "index.d.ts",
     "/src",
     "/dist"
   ],
@@ -37,6 +46,7 @@
   "scripts": {
     "build": "rimraf dist && esbuild src/mime-type.js --bundle --platform=browser --global-name=MIMEType --footer:js='window.MIMEType = MIMEType.default;' --outfile=dist/mime-type.js && esbuild src/mime-type.js --bundle --sourcemap --minify --platform=browser --global-name=MIMEType --footer:js='window.MIMEType = MIMEType.default;' --outfile=dist/mime-type.min.js",
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "lint": "eslint --ext .js --fix --ignore-path .gitignore .",
     "coverage": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "pretest": "node scripts/get-latest-platform-tests.js"
   },
@@ -45,6 +55,7 @@
     "esbuild": "^0.15.10",
     "eslint": "^8.24.0",
     "eslint-plugin-compat": "^4.0.2",
+    "eslint-plugin-jsdoc": "^39.3.6",
     "jest": "^29.1.2",
     "minipass-fetch": "^2.1.2",
     "printable-string": "^0.3.0",

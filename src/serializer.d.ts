@@ -4,7 +4,7 @@ export type MIMEType = import('./mime-type.js').default;
 /**
  * A function that serializes the provided {@link MIMEType} to a string.
  *
- * @module serialize
+ * @module serializer
  * @param {MIMEType} mimeType The MIME type to serialize.
  * @returns {string} The serialized MIME type.
  */
