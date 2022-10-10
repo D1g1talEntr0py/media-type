@@ -1,16 +1,15 @@
-'use strict';
 import printableString from 'printable-string';
 import { labelToName as encodingLabelToName } from 'whatwg-encoding';
 import parse from '../src/parser.js';
 import serialize from '../src/serializer.js';
-import generatedTestCases from './web-platform-tests/generated-mime-types.json';
-import testCases from './web-platform-tests/mime-types.json';
+import generatedTestCases from './web-platform-tests/generated-media-types.json';
+import testCases from './web-platform-tests/media-types.json';
 
-describe('mime-types.json', () => {
+describe('media-types.json', () => {
 	runTestCases(testCases);
 });
 
-describe('generated-mime-types.json', () => {
+describe('generated-media-types.json', () => {
 	runTestCases(generatedTestCases);
 });
 
@@ -26,9 +25,7 @@ function runTestCases(cases) {
 		}
 
 		const printableVersion = printableString(testCase.input);
-		const testName = printableVersion !== testCase.input ?
-			`${testCase.input} (${printableString(testCase.input)})` :
-			testCase.input;
+		const testName = printableVersion !== testCase.input ? `${testCase.input} (${printableString(testCase.input)})` :	testCase.input;
 
 		test(testName, () => {
 			const parsed = parse(testCase.input);

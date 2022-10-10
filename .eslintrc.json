@@ -35,6 +35,7 @@
 	"settings": {
 		"jsdoc": {
 			"preferredTypes": { "object": "Object", "Iterator": "Iterator", "IterableIterator": "IterableIterator" },
+			"structuredTags": {	"template": {	"name": "namepath-defining", "type": false } },
 			"tagNamePreference": {
 				"augments": {
 					"message": "@extends is to be used over @augments as it is more evocative of classes than @augments",

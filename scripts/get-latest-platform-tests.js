@@ -25,7 +25,7 @@ async function main() {
 
 	for (const file of files) {
 		const url = urlPrefix + file;
-		const targetFile = resolve(__dirname, '..', 'test', 'web-platform-tests', file);
+		const targetFile = resolve(__dirname, '..', 'test', 'web-platform-tests', file.replace('mime', 'media'));
 		const res = await fetch(url);
 		res.body.pipe(createWriteStream(targetFile));
 	}

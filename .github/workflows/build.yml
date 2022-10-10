@@ -14,9 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-          - 12
-          - 14
           - 16
+          - 18
         architecture:
           - x64
     steps:

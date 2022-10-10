@@ -5,11 +5,11 @@ import {
 } from './utils.js';
 
 /**
- * Function to parse a MIME type.
+ * Function to parse a media type.
  *
  * @module parser
- * @param {string} input The MIME type to parse
- * @returns {{ type: string, subtype: string, parameters: Map<string, string> }} An object populated with the parsed MIME type properties and any parameters.
+ * @param {string} input The media type to parse
+ * @returns {{ type: string, subtype: string, parameters: Map<string, string> }} An object populated with the parsed media type properties and any parameters.
  */
 const parse = (input) => {
 	input = removeLeadingAndTrailingHTTPWhitespace(input);
@@ -44,7 +44,7 @@ const parse = (input) => {
 		return null;
 	}
 
-	const mimeType = {
+	const mediaType = {
 		type: asciiLowercase(type),
 		subtype: asciiLowercase(subtype),
 		parameters: new Map()
@@ -98,12 +98,12 @@ const parse = (input) => {
 		if (parameterName.length > 0 &&
 			solelyContainsHTTPTokenCodePoints(parameterName) &&
 			solelyContainsHTTPQuotedStringTokenCodePoints(parameterValue) &&
-			!mimeType.parameters.has(parameterName)) {
-			mimeType.parameters.set(parameterName, parameterValue);
+			!mediaType.parameters.has(parameterName)) {
+			mediaType.parameters.set(parameterName, parameterValue);
 		}
 	}
 
-	return mimeType;
+	return mediaType;
 };
 
 export default parse;

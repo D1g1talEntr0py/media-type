@@ -1,22 +1,22 @@
 import { solelyContainsHTTPTokenCodePoints } from './utils.js';
 // eslint-disable-next-line jsdoc/valid-types
-/** @typedef { import('./mime-type.js').default } MIMEType */
+/** @typedef { import('./media-type.js').default } MediaType */
 
 /**
- * A function that serializes the provided {@link MIMEType} to a string.
+ * A function that serializes the provided {@link mediaType} to a string.
  *
  * @module serializer
- * @param {MIMEType} mimeType The MIME type to serialize.
- * @returns {string} The serialized MIME type.
+ * @param {MediaType} mediaType The media type to serialize.
+ * @returns {string} The serialized media type.
  */
-const serialize = (mimeType) => {
-	let serialization = `${mimeType.type}/${mimeType.subtype}`;
+const serialize = (mediaType) => {
+	let serialization = `${mediaType.type}/${mediaType.subtype}`;
 
-	if (mimeType.parameters.size === 0) {
+	if (mediaType.parameters.size === 0) {
 		return serialization;
 	}
 
-	for (let [name, value] of mimeType.parameters) {
+	for (let [name, value] of mediaType.parameters) {
 		serialization += ';';
 		serialization += name;
 		serialization += '=';
