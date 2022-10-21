@@ -5,7 +5,7 @@ This package will parse [MIME types](https://mimesniff.spec.whatwg.org/#understa
 This version is using ES Modules instead of commonJS.
 
 ```js
-import { MediaType } from '@d1g1tal/mime-type';
+import { MediaType } from '@d1g1tal/media-type';
 
 const mediaType = new MediaType(`Text/HTML;Charset="utf-8"`);
 
