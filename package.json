@@ -1,7 +1,7 @@
 {
   "name": "@d1g1tal/media-type",
   "description": "Parses, serializes, and manipulates media types, according to the WHATWG MIME Sniffing Standard",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "maintainers": [
     {

@@ -30,9 +30,20 @@ describe('Smoke tests via README intro example', () => {
 });
 
 describe('Constructor behavior', () => {
-	it('accepts an object', () => {
-		const mediaType = new MediaType({type: 'text', subtype: 'html'});
-		expect(mediaType.toString()).toEqual('text/html');
+	it('accepts an object for the second parameter', () => {
+		const mediaType = new MediaType('text/html;charset=iso-8859-1', { charset: 'utf-8' });
+		expect(mediaType.toString()).toEqual('text/html;charset=utf-8');
+	});
+
+	it('passed parameter overrides the parsed', () => {
+		const mediaType = new MediaType('text/html;charset=iso-8859-1', { charset: 'utf-8' });
+		expect(mediaType.toString()).toEqual('text/html;charset=utf-8');
+	});
+
+	it('passed parameter overrides the parsed with different case', () => {
+		const externalMediaType = 'text/html;charset=iso-8859-1';
+		const mediaType = new MediaType(externalMediaType, { Charset: 'UTF-8' });
+		expect(mediaType.toString()).toEqual('text/html;charset=utf-8');
 	});
 
 	it('throws on unparsable media types', () => {

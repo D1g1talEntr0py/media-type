@@ -23,10 +23,10 @@ export default class MediaTypeParameters {
 	/**
 	 * Create a new MediaTypeParameters instance.
 	 *
-	 * @param {Map<string, string>} map The map of parameters for a media type.
+	 * @param {Array<Array<string>>} entries An array of [name, value] tuples.
 	 */
-	constructor(map = new Map()) {
-		this.#map = map;
+	constructor(entries) {
+		this.#map = new Map(entries);
 	}
 
 	/**

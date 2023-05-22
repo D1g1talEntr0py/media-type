@@ -20,20 +20,14 @@ export default class MediaType {
 	/**
 	 * Create a new MediaType instance from a string representation.
 	 *
-	 * @param {string|object} options The media type string or an object with type, subtype, and parameters.
+	 * @param {string} mediaType The media type to parse.
+	 * @param {Object} [parameters] Optional parameters.
 	 */
-	constructor(options) {
-		// If options is a string, parse it
-		if (typeof options === 'string') {
-			options = parse(options);
-		}
-
-		const { type, subtype, parameters = new MediaTypeParameters() } = options;
+	constructor(mediaType, parameters = {}) {
+		const { type, subtype, parameters: parsedParameters } = parse(mediaType);
 		this.#type = type;
 		this.#subtype = subtype;
-
-		// Check if parameters are provided as a Map
-		this.#parameters = typeof parameters == Map && parameters.size > 0	? new MediaTypeParameters(parameters.entries())	: parameters;
+		this.#parameters = new MediaTypeParameters([...parsedParameters, ...Object.entries(parameters).map(([name, value]) => [asciiLowercase(name), asciiLowercase(value)])]);
 	}
 
 	/**
@@ -44,7 +38,7 @@ export default class MediaType {
 	 */
 	static parse(string) {
 		try {
-			return new MediaType(parse(string));
+			return new MediaType(string);
 		} catch (e) {
 			throw new Error(`Could not parse media type string '${string}'`);
 		}

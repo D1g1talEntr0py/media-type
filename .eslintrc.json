@@ -12,6 +12,7 @@
 		"sourceType": "module"
 	},
 	"rules": {
+		"jsdoc/tag-lines": 0,
 		"no-constant-condition": "off",
 		"indent": [
 			"error",
