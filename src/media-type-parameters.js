@@ -9,16 +9,24 @@ import { asciiLowercase, solelyContainsHTTPQuotedStringTokenCodePoints, solelyCo
  * and attempting to set invalid characters will throw an {@link Error}.
  *
  * @example charset=utf-8
- * @module MediaTypeParameters
+ * @see https://mimesniff.spec.whatwg.org/#mime-type-essence
+ * @see https://mimesniff.spec.whatwg.org/#mime-type-essence-record
+ * @see https://mimesniff.spec.whatwg.org/#mime-type-essence-record-creation
+ * @see https://mimesniff.spec.whatwg.org/#mime-type-essence-record-creation-algorithm
+ * @module {MediaTypeParameters} media-type-parameters
+ * @author D1g1talEntr0py <jason.dimeo@gmail.com>
  */
 export default class MediaTypeParameters {
+	/** @type {Map<string, string>} */
+	#map;
+
 	/**
 	 * Create a new MediaTypeParameters instance.
 	 *
-	 * @param {Map.<string, string>} map The map of parameters for a media type.
+	 * @param {Map<string, string>} map The map of parameters for a media type.
 	 */
-	constructor(map) {
-		this._map = map;
+	constructor(map = new Map()) {
+		this.#map = map;
 	}
 
 	/**
@@ -27,7 +35,7 @@ export default class MediaTypeParameters {
 	 * @returns {number} The number of media type parameters
 	 */
 	get size() {
-		return this._map.size;
+		return this.#map.size;
 	}
 
 	/**
@@ -37,7 +45,7 @@ export default class MediaTypeParameters {
 	 * @returns {string} The media type parameter value.
 	 */
 	get(name) {
-		return this._map.get(asciiLowercase(String(name)));
+		return this.#map.get(asciiLowercase(String(name)));
 	}
 
 	/**
@@ -47,7 +55,7 @@ export default class MediaTypeParameters {
 	 * @returns {boolean} true if the media type parameter exists, false otherwise.
 	 */
 	has(name) {
-		return this._map.has(asciiLowercase(String(name)));
+		return this.#map.has(asciiLowercase(String(name)));
 	}
 
 	/**
@@ -70,7 +78,7 @@ export default class MediaTypeParameters {
 			throw new Error(`Invalid media type parameter value "${value}": only HTTP quoted-string token code points are valid.`);
 		}
 
-		this._map.set(name, value);
+		this.#map.set(name, value);
 
 		return this;
 	}
@@ -79,7 +87,7 @@ export default class MediaTypeParameters {
 	 * Clears all the media type parameters.
 	 */
 	clear() {
-		this._map.clear();
+		this.#map.clear();
 	}
 
 	/**
@@ -90,7 +98,7 @@ export default class MediaTypeParameters {
 	 */
 	delete(name) {
 		name = asciiLowercase(String(name));
-		return this._map.delete(name);
+		return this.#map.delete(name);
 	}
 
 	/**
@@ -100,7 +108,7 @@ export default class MediaTypeParameters {
 	 * @param {*} [thisArg] Optional object when binding 'this' to the callback.
 	 */
 	forEach(callback, thisArg) {
-		this._map.forEach(callback, thisArg);
+		this.#map.forEach(callback, thisArg);
 	}
 
 	/**
@@ -109,7 +117,7 @@ export default class MediaTypeParameters {
 	 * @returns {IterableIterator<string>} The {@link IterableIterator} of media type parameter names.
 	 */
 	keys() {
-		return this._map.keys();
+		return this.#map.keys();
 	}
 
 	/**
@@ -118,7 +126,7 @@ export default class MediaTypeParameters {
 	 * @returns {IterableIterator<string>} The {@link IterableIterator} of media type parameter values.
 	 */
 	values() {
-		return this._map.values();
+		return this.#map.values();
 	}
 
 	/**
@@ -127,7 +135,7 @@ export default class MediaTypeParameters {
 	 * @returns {IterableIterator<Array<Array<string>>>} The media type parameter entries.
 	 */
 	entries() {
-		return this._map.entries();
+		return this.#map.entries();
 	}
 
 	/**
@@ -136,6 +144,26 @@ export default class MediaTypeParameters {
 	 * @returns {Iterator<string, string, undefined>} The {@link Symbol.iterator} for the media type parameters.
 	 */
 	[Symbol.iterator]() {
-		return this._map[Symbol.iterator]();
+		return this.#map[Symbol.iterator]();
+	}
+
+	/**
+	 * Returns a string representation of the media type parameters.
+	 * This method is called by the `String()` function.
+	 *
+	 * @example
+	 * const parameters = new MediaTypeParameters(new Map([['charset', 'utf-8']]));
+	 * String(parameters); // 'charset=utf-8'
+	 * parameters.toString(); // 'charset=utf-8'
+	 * parameters + ''; // 'charset=utf-8'
+	 * `${parameters}`; // 'charset=utf-8'
+	 * parameters[Symbol.toStringTag]; // 'MediaTypeParameters'
+	 * parameters[Symbol.toStringTag](); // 'MediaTypeParameters'
+	 * Object.prototype.toString.call(parameters); // '[object MediaTypeParameters]'
+	 * parameters + ''; // 'charset=utf-8'
+	 * @returns {string} The string representation of the media type parameters.
+	 */
+	[Symbol.toStringTag]() {
+		return 'MediaTypeParameters';
 	}
 }

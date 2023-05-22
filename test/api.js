@@ -30,14 +30,8 @@ describe('Smoke tests via README intro example', () => {
 });
 
 describe('Constructor behavior', () => {
-	it('converts incoming arguments into strings', () => {
-		const arg = {
-			toString() {
-				return 'text/HTML';
-			}
-		};
-		const mediaType = new MediaType(arg);
-
+	it('accepts an object', () => {
+		const mediaType = new MediaType({type: 'text', subtype: 'html'});
 		expect(mediaType.toString()).toEqual('text/html');
 	});
 
@@ -48,20 +42,14 @@ describe('Constructor behavior', () => {
 });
 
 describe('static parse() behavior', () => {
-	it('converts incoming arguments into strings', () => {
-		const arg = {
-			toString() {
-				return 'text/HTML';
-			}
-		};
-		const mediaType = MediaType.parse(arg);
-
-		expect(mediaType.toString()).toEqual('text/html');
+	it('parses media types', () => {
+		const mediaType = MediaType.parse('Text/HTML;Charset="utf-8"');
+		expect(mediaType.toString()).toEqual('text/html;charset=utf-8');
 	});
 
-	it('returns null on unparsable media types', () => {
-		expect(MediaType.parse('asdf')).toBe(null);
-		expect(MediaType.parse('text/html™')).toBe(null);
+	it('throws error on unparsable media types', () => {
+		expect(() => MediaType.parse('asdf')).toThrow(Error);
+		expect(() => MediaType.parse('text/html™')).toThrow(Error);
 	});
 });
 

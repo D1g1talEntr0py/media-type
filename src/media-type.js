@@ -6,38 +6,47 @@ import { asciiLowercase, solelyContainsHTTPTokenCodePoints } from './utils.js';
 /**
  * Class used to parse media types.
  *
+ * @module {MediaType} media-type
  * @see https://mimesniff.spec.whatwg.org/#understanding-mime-types
- * @module MediaType
  */
 export default class MediaType {
+	/** @type {string} */
+	#type;
+	/** @type {string} */
+	#subtype;
+	/** @type {MediaTypeParameters} */
+	#parameters;
+
 	/**
 	 * Create a new MediaType instance from a string representation.
 	 *
-	 * @param {string} string The media type to parse
+	 * @param {string|object} options The media type string or an object with type, subtype, and parameters.
 	 */
-	constructor(string) {
-		string = String(string);
-		const result = parse(string);
-		if (result === null) {
-			throw new Error(`Could not parse media type string '${string}'`);
+	constructor(options) {
+		// If options is a string, parse it
+		if (typeof options === 'string') {
+			options = parse(options);
 		}
 
-		this._type = result.type;
-		this._subtype = result.subtype;
-		this._parameters = new MediaTypeParameters(result.parameters);
+		const { type, subtype, parameters = new MediaTypeParameters() } = options;
+		this.#type = type;
+		this.#subtype = subtype;
+
+		// Check if parameters are provided as a Map
+		this.#parameters = typeof parameters == Map && parameters.size > 0	? new MediaTypeParameters(parameters.entries())	: parameters;
 	}
 
 	/**
-	 * Static factor method for parsing a media type.
+	 * Static factory method for parsing a media type.
 	 *
-	 * @param {string} string The media type to parse
-	 * @returns {MediaType} The parsed {@link MediaType} object
+	 * @param {string} string The media type to parse.
+	 * @returns {MediaType} The parsed {@link MediaType} object or null if the string could not be parsed.
 	 */
 	static parse(string) {
 		try {
-			return new this(string);
+			return new MediaType(parse(string));
 		} catch (e) {
-			return null;
+			throw new Error(`Could not parse media type string '${string}'`);
 		}
 	}
 
@@ -47,7 +56,7 @@ export default class MediaType {
 	 * @returns {string} The media type without any parameters
 	 */
 	get essence() {
-		return `${this.type}/${this.subtype}`;
+		return `${this.#type}/${this.#subtype}`;
 	}
 
 	/**
@@ -56,7 +65,7 @@ export default class MediaType {
 	 * @returns {string} The type.
 	 */
 	get type() {
-		return this._type;
+		return this.#type;
 	}
 
 	/**
@@ -72,7 +81,7 @@ export default class MediaType {
 			throw new Error(`Invalid type ${value}: must contain only HTTP token code points`);
 		}
 
-		this._type = value;
+		this.#type = value;
 	}
 
 	/**
@@ -81,7 +90,7 @@ export default class MediaType {
 	 * @returns {string} The subtype.
 	 */
 	get subtype() {
-		return this._subtype;
+		return this.#subtype;
 	}
 
 	/**
@@ -97,7 +106,7 @@ export default class MediaType {
 			throw new Error(`Invalid subtype ${value}: must contain only HTTP token code points`);
 		}
 
-		this._subtype = value;
+		this.#subtype = value;
 	}
 
 	/**
@@ -106,7 +115,7 @@ export default class MediaType {
 	 * @returns {MediaTypeParameters} The media type parameters.
 	 */
 	get parameters() {
-		return this._parameters;
+		return this.#parameters;
 	}
 
 	/**
@@ -128,9 +137,9 @@ export default class MediaType {
 	 * @returns {boolean} true if this instance represents a JavaScript media type, false otherwise.
 	 */
 	isJavaScript({prohibitParameters = false} = {}) {
-		switch (this._type) {
+		switch (this.#type) {
 			case 'text': {
-				switch (this._subtype) {
+				switch (this.#subtype) {
 					case 'ecmascript':
 					case 'javascript':
 					case 'javascript1.0':
@@ -142,16 +151,16 @@ export default class MediaType {
 					case 'jscript':
 					case 'livescript':
 					case 'x-ecmascript':
-					case 'x-javascript': return !prohibitParameters || this._parameters.size === 0;
+					case 'x-javascript': return !prohibitParameters || this.#parameters.size === 0;
 					default: return false;
 				}
 			}
 			case 'application': {
-				switch (this._subtype) {
+				switch (this.#subtype) {
 					case 'ecmascript':
 					case 'javascript':
 					case 'x-ecmascript':
-					case 'x-javascript': return !prohibitParameters || this._parameters.size === 0;
+					case 'x-javascript': return !prohibitParameters || this.#parameters.size === 0;
 					default: return false;
 				}
 			}
@@ -165,7 +174,7 @@ export default class MediaType {
 	 * @returns {boolean} true if this instance represents an XML media type, false otherwise.
 	 */
 	isXML() {
-		return (this._subtype === 'xml' && (this._type === 'text' || this._type === 'application')) || this._subtype.endsWith('+xml');
+		return (this.#subtype === 'xml' && (this.#type === 'text' || this.#type === 'application')) || this.#subtype.endsWith('+xml');
 	}
 
 	/**
@@ -174,7 +183,7 @@ export default class MediaType {
 	 * @returns {boolean} true if this instance represents an HTML media type, false otherwise.
 	 */
 	isHTML() {
-		return this._subtype === 'html' && this._type === 'text';
+		return this.#subtype === 'html' && this.#type === 'text';
 	}
 
 	/**

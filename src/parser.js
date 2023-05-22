@@ -16,7 +16,7 @@ const parse = (input) => {
 
 	let position = 0;
 	let type = '';
-	while (position < input.length && input[position] !== '/') {
+	while (position < input.length && input[position] != '/') {
 		type += input[position];
 		++position;
 	}
@@ -33,7 +33,7 @@ const parse = (input) => {
 	++position;
 
 	let subtype = '';
-	while (position < input.length && input[position] !== ';') {
+	while (position < input.length && input[position] != ';') {
 		subtype += input[position];
 		++position;
 	}
@@ -59,14 +59,14 @@ const parse = (input) => {
 		}
 
 		let parameterName = '';
-		while (position < input.length && input[position] !== ';' && input[position] !== '=') {
+		while (position < input.length && input[position] != ';' && input[position] != '=') {
 			parameterName += input[position];
 			++position;
 		}
 		parameterName = asciiLowercase(parameterName);
 
 		if (position < input.length) {
-			if (input[position] === ';') {
+			if (input[position] == ';') {
 				continue;
 			}
 
@@ -75,15 +75,15 @@ const parse = (input) => {
 		}
 
 		let parameterValue = null;
-		if (input[position] === '"') {
+		if (input[position] == '"') {
 			[parameterValue, position] = collectAnHTTPQuotedString(input, position);
 
-			while (position < input.length && input[position] !== ';') {
+			while (position < input.length && input[position] != ';') {
 				++position;
 			}
 		} else {
 			parameterValue = '';
-			while (position < input.length && input[position] !== ';') {
+			while (position < input.length && input[position] != ';') {
 				parameterValue += input[position];
 				++position;
 			}
@@ -95,10 +95,7 @@ const parse = (input) => {
 			}
 		}
 
-		if (parameterName.length > 0 &&
-			solelyContainsHTTPTokenCodePoints(parameterName) &&
-			solelyContainsHTTPQuotedStringTokenCodePoints(parameterValue) &&
-			!mediaType.parameters.has(parameterName)) {
+		if (parameterName.length > 0 &&	solelyContainsHTTPTokenCodePoints(parameterName) &&	solelyContainsHTTPQuotedStringTokenCodePoints(parameterValue) && !mediaType.parameters.has(parameterName)) {
 			mediaType.parameters.set(parameterName, parameterValue);
 		}
 	}

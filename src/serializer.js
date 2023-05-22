@@ -1,5 +1,5 @@
 import { solelyContainsHTTPTokenCodePoints } from './utils.js';
-// eslint-disable-next-line jsdoc/valid-types
+
 /** @typedef { import('./media-type.js').default } MediaType */
 
 /**
@@ -17,13 +17,10 @@ const serialize = (mediaType) => {
 	}
 
 	for (let [name, value] of mediaType.parameters) {
-		serialization += ';';
-		serialization += name;
-		serialization += '=';
+		serialization += `;${name}=`;
 
 		if (!solelyContainsHTTPTokenCodePoints(value) || value.length === 0) {
-			value = value.replace(/(["\\])/ug, '\\$1');
-			value = `"${value}"`;
+			value = `"${value.replace(/(["\\])/ug, '\\$1')}"`;
 		}
 
 		serialization += value;
