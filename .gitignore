@@ -4,7 +4,7 @@ dist
 ### VisualStudioCode ###
 .vscode/**/*
 !.vscode/settings.json
-tests/scratch.js
 
-/coverage/
-/test/web-platform-tests/*
+### Testing ###
+/tests/coverage/
+/tests/web-platform-tests/*

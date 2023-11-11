@@ -13,6 +13,16 @@
 	},
 	"rules": {
 		"jsdoc/tag-lines": 0,
+		"jsdoc/no-defaults": 0,
+		"jsdoc/require-param": [
+			"error"
+		],
+		"no-unused-vars": [
+			"error",
+			{
+				"args": "after-used"
+			}
+		],
 		"no-constant-condition": "off",
 		"indent": [
 			"error",
@@ -29,7 +39,11 @@
 		],
 		"semi": [
 			"error",
-			"always"
+			"always",
+			{
+				"omitLastInOneLineBlock": true,
+				"omitLastInOneLineClassBody": true
+			}
 		]
 	},
 	"overrides": [],

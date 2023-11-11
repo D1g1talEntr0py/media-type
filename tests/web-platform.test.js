@@ -1,9 +1,8 @@
 import printableString from 'printable-string';
 import { labelToName as encodingLabelToName } from 'whatwg-encoding';
-import parse from '../src/parser.js';
-import serialize from '../src/serializer.js';
 import generatedTestCases from './web-platform-tests/generated-media-types.json';
 import testCases from './web-platform-tests/media-types.json';
+import MediaType from '../src/media-type.js';
 
 describe('media-types.json', () => {
 	runTestCases(testCases);
@@ -28,15 +27,13 @@ function runTestCases(cases) {
 		const testName = printableVersion !== testCase.input ? `${testCase.input} (${printableString(testCase.input)})` :	testCase.input;
 
 		test(testName, () => {
-			const parsed = parse(testCase.input);
-
 			if (testCase.output === null) {
-				expect(parsed).toEqual(null);
+				expect(() => new MediaType(testCase.input)).toThrow();
 			} else {
-				const serialized = serialize(parsed);
-				expect(serialized).toEqual(testCase.output);
+				const mediaType = new MediaType(testCase.input);
+				expect(mediaType.toString()).toEqual(testCase.output);
 
-				const charset = parsed.parameters.get('charset');
+				const charset = mediaType.parameters.get('charset');
 				const encoding = encodingLabelToName(charset);
 				if (testCase.encoding !== null && testCase.encoding !== undefined) {
 					expect(encoding).toEqual(testCase.encoding);
