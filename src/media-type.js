@@ -74,11 +74,11 @@ export default class MediaType {
 	 * Checks if the media type matches the specified type.
 	 *
 	 * @todo Fix string handling to parse the type and subtype from the string.
-	 * @param {MediaType|string} type The media type to check.
+	 * @param {MediaType|string} mediaType The media type to check.
 	 * @returns {boolean} true if the media type matches the specified type, false otherwise.
 	 */
-	matches(type) {
-		return (this.#type == type?.type && this.#subtype == type?.subtype) || this.essence.includes(type);
+	matches(mediaType) {
+		return (this.#type === mediaType?.type && this.#subtype === mediaType?.subtype) || this.essence.includes(mediaType);
 	}
 
 	/**
