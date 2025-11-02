@@ -1,7 +1,8 @@
-import MediaType from '../src/media-type.js';
+import { MediaType } from '../src/media-type';
+import { beforeEach, expect, describe, it } from 'vitest';
 
 describe('Smoke tests via README intro example', () => {
-	let mediaType;
+	let mediaType: MediaType;
 	beforeEach(() => {
 		mediaType = new MediaType('Text/HTML;Charset="utf-8"');
 	});
@@ -53,7 +54,7 @@ describe('Constructor behavior', () => {
 });
 
 describe('type manipulation', () => {
-	let mediaType;
+	let mediaType: MediaType;
 	beforeEach(() => {
 		mediaType = new MediaType('application/xml;foo=bar');
 	});
@@ -68,19 +69,21 @@ describe('type manipulation', () => {
 	it('throws an error for non-HTTP token code points', () => {
 		// not exhaustive; maybe later
 		expect(() => {
+			// @ts-expect-error - Test is supposed to throw an error
 			mediaType.type = '/';
 		}).toThrow();
 	});
 
 	it('throws an error for an empty string', () => {
 		expect(() => {
+			// @ts-expect-error - Test is supposed to throw an error
 			mediaType.type = '';
 		}).toThrow();
 	});
 });
 
 describe('subtype manipulation', () => {
-	let mediaType;
+	let mediaType: MediaType;
 	beforeEach(() => {
 		mediaType = new MediaType('application/xml;foo=bar');
 	});
@@ -95,12 +98,14 @@ describe('subtype manipulation', () => {
 	it('throws an error for non-HTTP token code points', () => {
 		// not exhaustive; maybe later
 		expect(() => {
+			// @ts-expect-error - Test is supposed to throw an error
 			mediaType.subtype = '/';
 		}).toThrow();
 	});
 
 	it('throws an error for an empty string', () => {
 		expect(() => {
+			// @ts-expect-error - Test is supposed to throw an error
 			mediaType.subtype = '';
 		}).toThrow();
 	});
@@ -109,42 +114,42 @@ describe('subtype manipulation', () => {
 describe('parse', () => {
 	it('should parse json', () => {
 		const mediaType = MediaType.parse('application/json');
-		expect(mediaType.type).toEqual('application');
-		expect(mediaType.subtype).toEqual('json');
-		expect(mediaType.essence).toEqual('application/json');
-		expect(mediaType.toString()).toEqual('application/json');
+		expect(mediaType?.type).toEqual('application');
+		expect(mediaType?.subtype).toEqual('json');
+		expect(mediaType?.essence).toEqual('application/json');
+		expect(mediaType?.toString()).toEqual('application/json');
 	});
 
 	it('should parse json with charset', () => {
 		const mediaType = MediaType.parse('application/json;charset=utf-8');
-		expect(mediaType.type).toEqual('application');
-		expect(mediaType.subtype).toEqual('json');
-		expect(mediaType.essence).toEqual('application/json');
-		expect(mediaType.toString()).toEqual('application/json;charset=utf-8');
+		expect(mediaType?.type).toEqual('application');
+		expect(mediaType?.subtype).toEqual('json');
+		expect(mediaType?.essence).toEqual('application/json');
+		expect(mediaType?.toString()).toEqual('application/json;charset=utf-8');
 	});
 
 	it('should parse json with charset and parameter', () => {
 		const mediaType = MediaType.parse('application/json;charset=utf-8;foo=bar');
-		expect(mediaType.type).toEqual('application');
-		expect(mediaType.subtype).toEqual('json');
-		expect(mediaType.essence).toEqual('application/json');
-		expect(mediaType.toString()).toEqual('application/json;charset=utf-8;foo=bar');
+		expect(mediaType?.type).toEqual('application');
+		expect(mediaType?.subtype).toEqual('json');
+		expect(mediaType?.essence).toEqual('application/json');
+		expect(mediaType?.toString()).toEqual('application/json;charset=utf-8;foo=bar');
 	});
 
 	it('should parse json with parameter', () => {
 		const mediaType = MediaType.parse('application/json;foo=bar');
-		expect(mediaType.type).toEqual('application');
-		expect(mediaType.subtype).toEqual('json');
-		expect(mediaType.essence).toEqual('application/json');
-		expect(mediaType.toString()).toEqual('application/json;foo=bar');
+		expect(mediaType?.type).toEqual('application');
+		expect(mediaType?.subtype).toEqual('json');
+		expect(mediaType?.essence).toEqual('application/json');
+		expect(mediaType?.toString()).toEqual('application/json;foo=bar');
 	});
 
 	it('should parse json patch', () => {
 		const mediaType = MediaType.parse('application/merge-patch+json');
-		expect(mediaType.type).toEqual('application');
-		expect(mediaType.subtype).toEqual('merge-patch+json');
-		expect(mediaType.essence).toEqual('application/merge-patch+json');
-		expect(mediaType.toString()).toEqual('application/merge-patch+json');
+		expect(mediaType?.type).toEqual('application');
+		expect(mediaType?.subtype).toEqual('merge-patch+json');
+		expect(mediaType?.essence).toEqual('application/merge-patch+json');
+		expect(mediaType?.toString()).toEqual('application/merge-patch+json');
 	});
 
 	it('should return null for an invalid media type', () => {

@@ -1,5 +1,5 @@
-import MediaType from '../src/media-type.js';
-import { describe, it } from '@jest/globals';
+import { MediaType } from '../src/media-type';
+import { describe, expect, it } from 'vitest';
 
 describe('MediaType', () => {
 	describe('constructor', () => {
@@ -10,6 +10,7 @@ describe('MediaType', () => {
 		});
 
 		it('should throw an error if the type is not a string', () => {
+			// @ts-expect-error - Testing invalid input
 			expect(() => new MediaType()).toThrow();
 		});
 
@@ -34,22 +35,27 @@ describe('MediaType', () => {
 		});
 
 		it('should throw an error if the parameters is not an object', () => {
+			// @ts-expect-error - Testing invalid input
 			expect(() => new MediaType('text/html', 'foo')).toThrow();
 		});
 
 		it('should throw an error if the parameters is an array', () => {
+			// @ts-expect-error - Testing invalid input
 			expect(() => new MediaType('text/html', [])).toThrow();
 		});
 
 		it('should throw an error if the parameters is a string', () => {
+			// @ts-expect-error - Testing invalid input
 			expect(() => new MediaType('text/html', 'foo=bar')).toThrow();
 		});
 
 		it('should throw an error if the parameters is a number', () => {
+			// @ts-expect-error - Testing invalid input
 			expect(() => new MediaType('text/html', 42)).toThrow();
 		});
 
 		it('should throw an error if the parameters is a boolean', () => {
+			// @ts-expect-error - Testing invalid input
 			expect(() => new MediaType('text/html', true)).toThrow();
 		});
 	});

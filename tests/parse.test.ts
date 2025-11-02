@@ -1,6 +1,6 @@
-import { describe, expect, it } from '@jest/globals';
-import MediaTypeParser from '../src/media-type-parser.js';
-import MediaTypeParameters from '../src/media-type-parameters.js';
+import { describe, expect, it } from 'vitest';
+import { MediaTypeParser } from '../src/media-type-parser';
+import { MediaTypeParameters } from '../src/media-type-parameters';
 
 describe('parse', () => {
 	it('should parse a media type', () => {
@@ -8,7 +8,7 @@ describe('parse', () => {
 		expect(parsed).toEqual({
 			type: 'text',
 			subtype: 'html',
-			parameters: {}
+			parameters: new MediaTypeParameters()
 		});
 	});
 

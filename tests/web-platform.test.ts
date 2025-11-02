@@ -1,8 +1,11 @@
 import printableString from 'printable-string';
 import { labelToName as encodingLabelToName } from 'whatwg-encoding';
-import generatedTestCases from './web-platform-tests/generated-media-types.json';
 import testCases from './web-platform-tests/media-types.json';
-import MediaType from '../src/media-type.js';
+import generatedTestCases from './web-platform-tests/generated-media-types.json';
+import { MediaType } from '../src/media-type';
+import { expect, describe, it } from 'vitest';
+
+type TestCase = string | { input: string; output: string | null; encoding?: string | null; navigable?: boolean; };
 
 describe('media-types.json', () => {
 	runTestCases(testCases);
@@ -13,10 +16,9 @@ describe('generated-media-types.json', () => {
 });
 
 /**
- *
- * @param {Object} cases The test cases to run
+ * Run the test cases.
  */
-function runTestCases(cases) {
+function runTestCases(cases: Array<TestCase | string>): void {
 	for (const testCase of cases) {
 		if (typeof testCase === 'string') {
 			// It's a comment
@@ -26,7 +28,7 @@ function runTestCases(cases) {
 		const printableVersion = printableString(testCase.input);
 		const testName = printableVersion !== testCase.input ? `${testCase.input} (${printableString(testCase.input)})` :	testCase.input;
 
-		test(testName, () => {
+		it(testName, () => {
 			if (testCase.output === null) {
 				expect(() => new MediaType(testCase.input)).toThrow();
 			} else {

@@ -1,0 +1,1 @@
+export const httpTokenCodePoints: RegExp = /^[-!#$%&'*+.^_`|~A-Za-z0-9]*$/u;

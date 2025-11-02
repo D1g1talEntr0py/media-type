@@ -1,5 +1,5 @@
-import MediaTypeParameters from '../src/media-type-parameters.js';
-import { jest, describe, it } from '@jest/globals';
+import { MediaTypeParameters } from '../src/media-type-parameters';
+import { vi, expect, describe, it } from 'vitest';
 
 describe('MediaTypeParameters', () => {
 	describe('constructor', () => {
@@ -88,7 +88,7 @@ describe('MediaTypeParameters', () => {
 	describe('forEach', () => {
 		it('should iterate over each parameter', () => {
 			const parameters = new MediaTypeParameters([[ 'foo', 'bar'], [ 'bar', 'baz' ]]);
-			const callback = jest.fn();
+			const callback = vi.fn();
 
 			parameters.forEach(callback);
 
@@ -114,7 +114,7 @@ describe('MediaTypeParameters', () => {
 		it('should return the string tag', () => {
 			const parameters = new MediaTypeParameters([[ 'foo', 'bar'], [ 'bar', 'baz' ]]);
 
-			expect(parameters[Symbol.toStringTag]()).toBe('MediaTypeParameters');
+			expect(parameters[Symbol.toStringTag]).toBe('MediaTypeParameters');
 		});
 	});
 
