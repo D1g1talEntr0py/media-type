@@ -1,9 +1,12 @@
 # Parse, serialize, and manipulate media types
 
-[![npm version](https://img.shields.io/npm/v/@d1g1tal/media-type.svg)](https://www.npmjs.com/package/@d1g1tal/media-type)
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
-[![Node Version](https://img.shields.io/node/v/@d1g1tal/media-type.svg)](https://nodejs.org)
+[![npm version](https://img.shields.io/npm/v/@d1g1tal/media-type?color=blue)](https://www.npmjs.com/package/@d1g1tal/media-type)
+[![npm downloads](https://img.shields.io/npm/dm/@d1g1tal/media-type)](https://www.npmjs.com/package/@d1g1tal/media-type)
+[![CI](https://github.com/D1g1talEntr0py/media-type/actions/workflows/ci.yml/badge.svg)](https://github.com/D1g1talEntr0py/media-type/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/D1g1talEntr0py/media-type/graph/badge.svg)](https://codecov.io/gh/D1g1talEntr0py/media-type)
+[![License: ISC](https://img.shields.io/github/license/D1g1talEntr0py/media-type)](https://github.com/D1g1talEntr0py/media-type/blob/main/LICENSE)
+[![Node.js](https://img.shields.io/node/v/@d1g1tal/media-type)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 > **Note**: This is a TypeScript rewrite and fork of the original [`whatwg-mimetype`](https://github.com/jsdom/whatwg-mimetype) package. See [CHANGELOG.md](./CHANGELOG.md) for migration information.
 
@@ -151,12 +154,12 @@ In addition to the main `MediaType` class, this package also exports:
 - **Type exports**: `MediaTypeComponent`, `ParsedMediaType` (TypeScript types)
 
 ```typescript
-import { 
-  MediaType, 
-  MediaTypeParameters, 
+import {
+  MediaType,
+  MediaTypeParameters,
   MediaTypeParser,
   type MediaTypeComponent,
-  type ParsedMediaType 
+  type ParsedMediaType
 } from '@d1g1tal/media-type';
 ```
 
@@ -201,7 +204,7 @@ This project is a fork and substantial rewrite of the excellent [`whatwg-mimetyp
 - Optimize bundle size and performance
 - Maintain WHATWG standard compliance
 
-**Original Author**: Domenic Denicola  
+**Original Author**: Domenic Denicola
 **Current Maintainer**: Jason DiMeo
 
 The original contributors' excellent work is acknowledged with gratitude. This fork maintains the same commitment to WHATWG standards compliance while providing a modern TypeScript-first experience.
