@@ -1,17 +1,3 @@
-## [5.1.1](https://github.com/D1g1talEntr0py/media-type/compare/v5.1.0...v5.1.1) (2026-03-01)
-
-### Bug Fixes
-
-* **ci:** add workflow_dispatch trigger, correct tarball glob, and add type-check script (a46c2c19baf6c49b3b4e57da3e36de08a6df9e1f)
-
-### Tests
-
-* removed web-platform-tests from .gitignore (db2fbdd787928e9b5ac2661bd4a738221f084280)
-
-### Continuous Integration
-
-* added missing test data (12d03ca176a8c4407610774e599325df7790e0bc)
-
 ## [5.1.0](https://github.com/D1g1talEntr0py/media-type/compare/v5.0.0...v5.1.0) (2026-03-01)
 
 ### Features
