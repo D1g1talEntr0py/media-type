@@ -1,3 +1,77 @@
+## [5.1.0](https://github.com/D1g1talEntr0py/media-type/compare/v5.0.0...v5.1.0) (2026-03-01)
+
+### Features
+
+* convert to TypeScript (06901a60aa3d0643815e5f3c53d934f2dae0b361)
+
+### Code Refactoring
+
+* **parser:** simplify component collection API (681e8f275b46cc39a6f146f1bcdddd85a277136a)
+Replaces the options-object-based filterComponent method with a
+straighter collect function returning a tuple, eliminating unnecessary
+parameter grouping and making call sites easier to read.
+
+Switches the whitespace character lookup from an array (O(n) includes)
+to a Set (O(1) has) for a small but consistent performance gain.
+
+
+### Documentation
+
+* update README badges and fix minor formatting (51cf9457fc604cccde032c060ecb86bf876a9713)
+Replaces static badge URLs with dynamic ones that show live npm download
+counts and the new CI/Codecov status badges, giving visitors an
+immediate signal of project health.
+
+Fixes trailing-whitespace and import-block formatting issues.
+
+
+### Miscellaneous Chores
+
+* upgrade dev dependencies to latest versions (6b54d8b1cddf7dbc824dba54fd5933570b66a262)
+Bumps eslint to v10, typescript-eslint to 8.56, vitest/coverage-v8/ui
+to 4.0.18, @types/node to 25, @types/web to 0.0.338, and several
+transitive deps (esbuild, rollup, vite, acorn, ajv, etc.).
+
+Adds @d1g1tal/tsbuild as the project build tool, replacing the previous
+build setup, and introduces a type-check script. Removes the duplicate
+coverage script alias. Sets the minimum Node.js engine to >=20.16.0.
+
+Updates .gitignore to track .tsbuild/ output directory.
+
+
+### Build System
+
+* add semantic-release config and release docs (1cdaab0d9db81c363cf1d81e8ae36e758b2b7c57)
+Adds a .releaserc.json that configures semantic-release with the
+conventionalcommits preset, custom release rules (refactor triggers a
+patch bump), grouped changelog sections, npm pack + publish with
+provenance, and a git commit of CHANGELOG.md and package.json after
+each release.
+
+Adds a release-process.md guide explaining how to author commits,
+open PRs, merge to main, and verify the automated release, including
+a dry-run section and a troubleshooting FAQ.
+
+
+### Continuous Integration
+
+* add GitHub Actions workflows for CI and release (4ad266f7984742e7c5dd722340dc3c0786e4c7c9)
+Adds a CI workflow that runs lint, type-check, tests with coverage, and
+build across Node.js 20, 22, and 24 on every push and pull request to
+main. Coverage is uploaded to Codecov from the Node 24 run only.
+
+Adds a release workflow powered by semantic-release that triggers on
+merges to main and fully automates versioning, changelog generation, npm
+publish with provenance, and GitHub Release creation.
+
+Adds a commit-msg git hook that enforces Conventional Commits format so
+that semantic-release can reliably determine version bumps.
+
+* add packageManager field for pnpm/action-setup (ee441628159346a66013bb429bf30e583d687b03)
+* trigger actions (836151dd5d4e73e3bf51f2a6d5b11f462eef25a8)
+* trigger actions (c415c4a08169fa103acbaaa9a1268485df6eb4e0)
+* trigger actions (fc350c91e7e2546604361aade7f0f55530095b38)
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
