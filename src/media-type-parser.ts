@@ -1,7 +1,7 @@
 import { MediaTypeParameters } from './media-type-parameters.js';
 import { httpTokenCodePoints } from './utils.js';
 
-const whitespaceCharacters: string[] = [' ', '\t', '\n', '\r'];
+const whitespaceChars = new Set([' ', '\t', '\n', '\r']);
 const trailingWhitespace: RegExp = /[ \t\n\r]+$/u;
 const leadingAndTrailingWhitespace: RegExp = /^[ \t\n\r]+|[ \t\n\r]+$/ug;
 
@@ -32,49 +32,46 @@ export class MediaTypeParser {
 	static parse(input: string): ParsedMediaType {
 		input = input.replace(leadingAndTrailingWhitespace, '');
 
-		const length = input.length, trim = true, lowerCase = false;
-		const { position: initialPosition, result: type } = MediaTypeParser.filterComponent({ input }, '/');
-		let position = initialPosition;
+		let position = 0;
+		const [ type, typeEnd ] = MediaTypeParser.collect(input, position, ['/']);
+		position = typeEnd;
 
-		if (!type.length || position >= length || !httpTokenCodePoints.test(type)) {
+		if (!type.length || position >= input.length || !httpTokenCodePoints.test(type)) {
 			throw new TypeError(MediaTypeParser.generateErrorMessage('type', type));
 		}
 
-		let subtype = '';
-		({ position, result: subtype } = MediaTypeParser.filterComponent({ position: ++position, input, trim }, ';')); // `++position` Skips past "/"
+		++position; // Skip "/"
+		const [ subtype, subtypeEnd ] = MediaTypeParser.collect(input, position, [';'], true, true);
+		position = subtypeEnd;
 
 		if (!subtype.length || !httpTokenCodePoints.test(subtype)) {
 			throw new TypeError(MediaTypeParser.generateErrorMessage('subtype', subtype));
 		}
 
-		let parameterName = '';
-		let parameterValue: string | null = null;
 		const parameters = new MediaTypeParameters();
 
-		while (position++ < length) { // `position++` Skips past "/"
-			while (whitespaceCharacters.includes(input[position]!)) { ++position }
+		while (position < input.length) {
+			++position; // Skip ";"
+			while (whitespaceChars.has(input[position]!)) { ++position }
 
-			({ position, result: parameterName } = MediaTypeParser.filterComponent({ position, input, lowerCase }, ';', '='));
+			let name: string;
+			[name, position] = MediaTypeParser.collect(input, position, [';', '='], false);
 
-			if (position < length) {
-				if (input[position] == ';') { continue }
+			if (position >= input.length || input[position] === ';') { continue }
 
-				// Skip past "="
-				++position;
-			}
+			++position; // Skip "="
 
+			let value: string;
 			if (input[position] === '"') {
-				[ parameterValue, position ] = MediaTypeParser.collectHttpQuotedString(input, position);
-
-				while (position < length && input[position] !== ';') { ++position }
+				[ value, position ] = MediaTypeParser.collectHttpQuotedString(input, position);
+				while (position < input.length && input[position] !== ';') { ++position }
 			} else {
-				({ position, result: parameterValue } = MediaTypeParser.filterComponent({ position, input, lowerCase, trim }, ';'));
-
-				if (!parameterValue) { continue }
+				[ value, position ] = MediaTypeParser.collect(input, position, [';'], false, true);
+				if (!value) { continue }
 			}
 
-			if (parameterName && parameterValue !== null && MediaTypeParameters.isValid(parameterName, parameterValue) && !parameters.has(parameterName)) {
-				parameters.set(parameterName, parameterValue);
+			if (name && MediaTypeParameters.isValid(name, value) && !parameters.has(name)) {
+				parameters.set(name, value);
 			}
 		}
 
@@ -90,21 +87,24 @@ export class MediaTypeParser {
 	}
 
 	/**
-	 * Filters a component from the input string.
-	 * @param options The options.
-	 * @param charactersToFilter The characters to filter.
-	 * @returns An object that includes the resulting string and updated position.
+	 * Collects characters from `input` starting at `pos` until a stop character is found.
+	 * @param input The input string.
+	 * @param pos The starting position.
+	 * @param stopChars Characters that end collection.
+	 * @param lowerCase Whether to ASCII-lowercase the result.
+	 * @param trim Whether to strip trailing HTTP whitespace.
+	 * @returns A tuple of the collected string and the updated position.
 	 */
-	private static filterComponent({ position = 0, input, lowerCase = true, trim = false }: MediaTypeComponent, ...charactersToFilter: string[]): { position: number, result: string } {
+	private static collect(input: string, pos: number, stopChars: string[], lowerCase = true, trim = false): [string, number] {
 		let result = '';
-		for (const length = input.length; position < length && !charactersToFilter.includes(input[position]!); position++) {
-			result += input[position];
+		for (const { length } = input; pos < length && !stopChars.includes(input[pos]!); pos++) {
+			result += input[pos];
 		}
 
 		if (lowerCase) { result = result.toLowerCase() }
 		if (trim) { result = result.replace(trailingWhitespace, '') }
 
-		return { position, result };
+		return [result, pos];
 	}
 
 	/**
