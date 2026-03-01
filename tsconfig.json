@@ -24,6 +24,5 @@
 		"moduleResolution": "Bundler",
 		"lib": [ "ESNext", "DOM" ],
 	},
-	"include": [ "src/**/*" ],
-	"tsbuild": { "entryPoints": { "media-type": "./src/index.ts" } }
+	"include": [ "src/**/*" ]
 }
