@@ -7,7 +7,6 @@ dist
 
 ### Testing ###
 /tests/coverage/
-/tests/web-platform-tests/*
 
 ### Tooling ###
 .tsbuild/
