@@ -1,3 +1,9 @@
+## [6.0.3](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.2...v6.0.3) (2026-03-02)
+
+### Bug Fixes
+
+* add prepublishOnly due to stupid human mistake (8864b012f879a91fe9aa363b6d0c842563d92331)
+
 ## [6.0.2](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.1...v6.0.2) (2026-03-02)
 
 ### Bug Fixes
