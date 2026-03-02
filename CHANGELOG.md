@@ -1,3 +1,14 @@
+## [6.0.2](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.1...v6.0.2) (2026-03-02)
+
+### Bug Fixes
+
+* version bump due to Claude mistake. Oops! (1752b078a6fe162e3f7837cdf02af4d62c9f3d05)
+
+### Documentation
+
+* fixed license file (e52439d82791806dac633ffae1e7c6891677e40e)
+* fixed license file, again (44dd9ccc6e6be8cb8b2ea29c7bb44f6daebf98fc)
+
 ## [6.0.1](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.0...v6.0.1) (2026-03-01)
 
 ### Bug Fixes
