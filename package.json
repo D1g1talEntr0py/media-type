@@ -59,7 +59,8 @@
 		"test:ui": "vitest run --ui",
 		"test:coverage": "vitest run --coverage",
 		"lint": "eslint",
-		"pretest": "node tests/scripts/get-latest-platform-tests.ts"
+		"pretest": "node tests/scripts/get-latest-platform-tests.ts",
+		"prepublishOnly": "pnpm lint && pnpm build"
 	},
 	"devDependencies": {
 		"@d1g1tal/tsbuild": "^1.3.2",
