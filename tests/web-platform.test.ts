@@ -1,5 +1,5 @@
 import printableString from 'printable-string';
-import { labelToName as encodingLabelToName } from 'whatwg-encoding';
+import { labelToName as encodingLabelToName } from '@exodus/bytes/encoding.js';
 import testCases from './web-platform-tests/media-types.json';
 import generatedTestCases from './web-platform-tests/generated-media-types.json';
 import { MediaType } from '../src/media-type';
@@ -35,7 +35,7 @@ function runTestCases(cases: Array<TestCase | string>): void {
 				const mediaType = new MediaType(testCase.input);
 				expect(mediaType.toString()).toEqual(testCase.output);
 
-				const charset = mediaType.parameters.get('charset');
+				const charset = mediaType.parameters.get('charset') ?? '';
 				const encoding = encodingLabelToName(charset);
 				if (testCase.encoding !== null && testCase.encoding !== undefined) {
 					expect(encoding).toEqual(testCase.encoding);
