@@ -1,3 +1,27 @@
+## [6.0.4](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.3...v6.0.4) (2026-03-07)
+
+### Bug Fixes
+
+* bump eslint to address security vulnerability (efc758fa369a2987b64297a09cc955ad076ce78e)
+Updates eslint to 10.0.3 which includes a security fix, along with
+its internal sub-packages (@eslint/core, @eslint/config-array,
+@eslint/config-helpers, @eslint/object-schema, @eslint/plugin-kit,
+eslint-scope, espree) to their corresponding patch releases.
+
+Also bumps @types/node to pick up the latest type definitions.
+
+
+### Miscellaneous Chores
+
+* replace whatwg-encoding with @exodus/bytes (14f73e922b6c0fe8cc70b28fb74434e5294586ad)
+Switches the encoding label lookup dependency from the deprecated
+whatwg-encoding to @exodus/bytes, which is faster and more
+spec-conformant.
+
+Updates the test code to use the new import path and adjusts the
+calling convention to pass an empty string fallback, matching the
+new API.
+
 ## [6.0.3](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.2...v6.0.3) (2026-03-02)
 
 ### Bug Fixes
