@@ -1,19 +1,10 @@
 {
 	"name": "@d1g1tal/media-type",
-	"description": "Parses, serializes, and manipulates media types, according to the WHATWG MIME Sniffing Standard",
+	"author": "D1g1talEntr0py",
 	"version": "6.0.4",
-	"author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
-	"maintainers": [
-		{
-			"name": "Jason DiMeo",
-			"email": "jason.dimeo@gmail.com"
-		}
-	],
-	"license": "ISC",
-	"packageManager": "pnpm@10.30.3",
-	"engines": {
-		"node": ">=20.16.0"
-	},
+	"license": "MIT",
+	"description": "Parses, serializes, and manipulates media types, according to the WHATWG MIME Sniffing Standard",
+	"homepage": "https://github.com/D1g1talEntr0py/media-type#readme",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/D1g1talEntr0py/media-type.git"
@@ -21,8 +12,18 @@
 	"bugs": {
 		"url": "https://github.com/D1g1talEntr0py/media-type/issues"
 	},
-	"homepage": "https://github.com/D1g1talEntr0py/media-type#readme",
+	"maintainers": [
+		{
+			"name": "D1g1talEntr0py",
+			"email": "jason.dimeo@gmail.com"
+		}
+	],
+	"engines": {
+		"node": ">=20.16.0"
+	},
+	"packageManager": "pnpm@10.32.1",
 	"publishConfig": {
+		"registry": "https://registry.npmjs.org",
 		"access": "public"
 	},
 	"type": "module",

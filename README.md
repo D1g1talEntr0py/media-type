@@ -4,7 +4,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/@d1g1tal/media-type)](https://www.npmjs.com/package/@d1g1tal/media-type)
 [![CI](https://github.com/D1g1talEntr0py/media-type/actions/workflows/ci.yml/badge.svg)](https://github.com/D1g1talEntr0py/media-type/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/D1g1talEntr0py/media-type/graph/badge.svg)](https://codecov.io/gh/D1g1talEntr0py/media-type)
-[![License: ISC](https://img.shields.io/github/license/D1g1talEntr0py/media-type?cacheSeconds=0)](https://github.com/D1g1talEntr0py/media-type/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/github/license/D1g1talEntr0py/media-type)](https://github.com/D1g1talEntr0py/media-type/blob/main/LICENSE)
 [![Node.js](https://img.shields.io/node/v/@d1g1tal/media-type)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
