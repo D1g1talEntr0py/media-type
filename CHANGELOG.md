@@ -1,3 +1,9 @@
+## [6.0.6](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.5...v6.0.6) (2026-03-18)
+
+### Bug Fixes
+
+* **release:** added --no-git-checks flag to ensure build is published (a9fe03c0a57b082207ff4dbcc1528ea27c7f78ab)
+
 ## [6.0.5](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.4...v6.0.5) (2026-03-18)
 
 ### Bug Fixes
