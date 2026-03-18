@@ -1,3 +1,24 @@
+## [6.0.5](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.4...v6.0.5) (2026-03-18)
+
+### Bug Fixes
+
+* **deps:** update dependencies to resolve CVE-2026-32141 (c6adc5b382b3a177ce1cbe7dd19d50305256bcba)
+Updates development dependencies and patches the pnpm lockfile to remediate the identified security vulnerability.
+
+Fixes CVE-2026-32141
+
+
+### Documentation
+
+* update license from ISC to MIT (9d7a3d00cf16ada234781a9a9bfa8aee8b4d1de3)
+Transitions the overarching software license to MIT across the project text and supporting package metadata.
+
+
+### Continuous Integration
+
+* update workflows and semantic release configuration (8a2ec6ce64ee5faa98eda3528f748de592a40294)
+Bumps GitHub Actions to their latest major versions and updates semantic-release configuration to use pnpm commands for publishing.
+
 ## [6.0.4](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.3...v6.0.4) (2026-03-07)
 
 ### Bug Fixes

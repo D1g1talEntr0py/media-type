@@ -1,7 +1,7 @@
 {
 	"name": "@d1g1tal/media-type",
 	"author": "D1g1talEntr0py",
-	"version": "6.0.4",
+	"version": "6.0.5",
 	"license": "MIT",
 	"description": "Parses, serializes, and manipulates media types, according to the WHATWG MIME Sniffing Standard",
 	"homepage": "https://github.com/D1g1talEntr0py/media-type#readme",
