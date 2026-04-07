@@ -1,28 +1,20 @@
 {
-	"clean": true,
 	"compilerOptions": {
-		"strict": true,
-		"declaration": true,
-		"declarationMap": true,
 		"sourceMap": true,
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"incremental": true,
+		"declaration": true,
 		"isolatedDeclarations": true,
-		"importHelpers": false,
-		"useUnknownInCatchVariables": true,
+		"isolatedModules": true,
 		"forceConsistentCasingInFileNames": true,
-		"verbatimModuleSyntax": true,
 		"allowUnusedLabels": false,
 		"allowUnreachableCode": false,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
+		"stableTypeOrdering": true,
 		"noUncheckedIndexedAccess": true,
-		"target": "ESNext",
-		"module": "Preserve",
-		"moduleDetection": "force",
-		"moduleResolution": "Bundler",
-		"lib": [ "ESNext", "DOM" ],
+		"resolveJsonModule": true,
+		"rootDir": "./src",
+		"lib": [ "esnext", "dom" ],
+		"module": "preserve"
 	},
-	"include": [ "src/**/*" ]
+	"include": [ "./src" ]
 }
