@@ -1,3 +1,16 @@
+## [6.0.7](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.6...v6.0.7) (2026-04-07)
+
+### Bug Fixes
+
+* update vitest to resolve Vite vulnerability (b0366f57a7ab577139d6f2df4bf7a399213ebcfa)
+Bumps vitest and related testing packages to resolve a security vulnerability (CVE-2026-39363) in the transitive vite dependency.
+
+
+### Build System
+
+* migrate to TypeScript 6 and update tooling (6d68916842f5c4960311c6040508bd744a47d269)
+Upgrades TypeScript to v6 and updates associated tooling (eslint, tsbuild, etc.) to their latest compatible versions. Also refines tsconfig.json and semantic-release configurations.
+
 ## [6.0.6](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.5...v6.0.6) (2026-03-18)
 
 ### Bug Fixes
