@@ -1,3 +1,9 @@
+## [6.0.8](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.7...v6.0.8) (2026-04-07)
+
+### Bug Fixes
+
+* **deps:** run fresh install to get the most up to date transient dependencies to finally address CVE-2026-39363 (c44a3ff727a06703013f59a9413d36440d7b46c5)
+
 ## [6.0.7](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.6...v6.0.7) (2026-04-07)
 
 ### Bug Fixes
