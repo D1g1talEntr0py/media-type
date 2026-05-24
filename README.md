@@ -191,6 +191,9 @@ pnpm build
 
 # Lint
 pnpm lint
+
+# Run benchmarks
+pnpm benchmark
 ```
 
 ## About This Fork

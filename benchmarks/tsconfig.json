@@ -1,0 +1,15 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"rootDir": "../",
+		"noEmit": true,
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"types": ["node"],
+		"allowImportingTsExtensions": true
+	},
+	"include": [
+		"./*.ts",
+		"./*.d.ts"
+	]
+}

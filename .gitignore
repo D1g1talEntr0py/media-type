@@ -10,3 +10,8 @@ dist
 
 ### Tooling ###
 .tsbuild/
+
+### Benchmarks ###
+/benchmarks/.cdn-cache/
+/benchmarks/baseline.txt
+/benchmarks/after.txt
