@@ -6,23 +6,30 @@ import { MediaTypeParameters } from './media-type-parameters.js';
  * @see https://mimesniff.spec.whatwg.org/#understanding-mime-types
  */
 export class MediaType {
-	private readonly _type: string;
-	private readonly _subtype: string;
-	private readonly _parameters: MediaTypeParameters;
+	readonly #type: string;
+	readonly #subtype: string;
+	readonly #essence: string;
+	readonly #parameters: MediaTypeParameters;
 
 	/**
 	 * Create a new MediaType instance from a string representation.
 	 * @param mediaType The media type to parse.
 	 * @param parameters Optional parameters.
 	 */
-	constructor(mediaType: string, parameters: Record<string, string> = {}) {
-		if (parameters === null || typeof parameters !== 'object' || Array.isArray(parameters)) {
-			throw new TypeError('The parameters argument must be an object');
+	constructor(mediaType: string, parameters?: Record<string, string>) {
+		({ type: this.#type, subtype: this.#subtype, parameters: this.#parameters } = MediaTypeParser.parse(mediaType));
+		this.#essence = this.#type + '/' + this.#subtype;
+
+		if (parameters !== undefined) {
+			if (parameters === null || typeof parameters !== 'object' || Array.isArray(parameters)) {
+				throw new TypeError('The parameters argument must be an object');
+			}
+			for (const name in parameters) {
+				if (Object.prototype.hasOwnProperty.call(parameters, name)) {
+					this.#parameters.set(name, parameters[name]!);
+				}
+			}
 		}
-
-		({ type: this._type, subtype: this._subtype, parameters: this._parameters } = MediaTypeParser.parse(mediaType));
-
-		for (const [ name, value ] of Object.entries(parameters)) { this._parameters.set(name, value) }
 	}
 
 	/**
@@ -45,7 +52,7 @@ export class MediaType {
 	 * @returns The type.
 	 */
 	get type(): string {
-		return this._type;
+		return this.#type;
 	}
 
 	/**
@@ -53,7 +60,7 @@ export class MediaType {
 	 * @returns The subtype.
 	 */
 	get subtype(): string {
-		return this._subtype;
+		return this.#subtype;
 	}
 
 	/**
@@ -61,7 +68,7 @@ export class MediaType {
 	 * @returns The media type without any parameters
 	 */
 	get essence(): string {
-		return `${this._type}/${this._subtype}`;
+		return this.#essence;
 	}
 
 	/**
@@ -69,17 +76,19 @@ export class MediaType {
 	 * @returns The media type parameters.
 	 */
 	get parameters(): MediaTypeParameters {
-		return this._parameters;
+		return this.#parameters;
 	}
 
 	/**
-	 * Checks if the media type matches the specified type.
+	 * Checks if the media type matches the specified type by essence (`type/subtype`),
+	 * ignoring parameters. Comparison is case-sensitive against the lowercased essence
+	 * of this instance — pass already-lowercased strings.
 	 *
 	 * @param mediaType The media type to check.
 	 * @returns true if the media type matches the specified type, false otherwise.
 	 */
 	matches(mediaType: MediaType | string): boolean {
-		return typeof mediaType === 'string' ? this.essence.includes(mediaType) : this._type === mediaType._type && this._subtype === mediaType._subtype;
+		return typeof mediaType === 'string' ? this.#essence === mediaType : this.#type === mediaType.#type && this.#subtype === mediaType.#subtype;
 	}
 
 	/**
@@ -88,7 +97,7 @@ export class MediaType {
 	 * @returns The serialized media type.
 	 */
 	toString(): string {
-		return `${this.essence}${this._parameters.toString()}`;
+		return this.#essence + this.#parameters.toString();
 	}
 
 	/**

@@ -4,6 +4,21 @@ const matcher: RegExp = /(["\\])/ug;
 const httpQuotedStringTokenCodePoints: RegExp = /^[\t\u0020-\u007E\u0080-\u00FF]*$/u;
 
 /**
+ * Returns the ASCII-lowercased version of `s`, or `s` itself when no characters
+ * require lowering. Avoids allocating a new string when input is already lowercase.
+ * @param s The string to lowercase.
+ * @returns The ASCII-lowercased version of `s`.
+ */
+const asciiLower = (s: string): string => {
+	for (let i = 0, length = s.length; i < length; i++) {
+		const c = s.charCodeAt(i);
+		if (c >= 0x41 && c <= 0x5A) { return s.toLowerCase() }
+	}
+
+	return s;
+};
+
+/**
  * Class representing the parameters for a media type record.
  * This class extends a JavaScript Map<string, string>.
  *
@@ -42,7 +57,7 @@ export class MediaTypeParameters extends Map<string, string> {
 	 * @returns The media type parameter value.
 	 */
 	override get(name: string): string | undefined {
-		return super.get(name.toLowerCase());
+		return super.get(asciiLower(name));
 	}
 
 	/**
@@ -52,7 +67,7 @@ export class MediaTypeParameters extends Map<string, string> {
 	 * @returns true if the media type parameter exists, false otherwise.
 	 */
 	override has(name: string): boolean {
-		return super.has(name.toLowerCase());
+		return super.has(asciiLower(name));
 	}
 
 	/**
@@ -68,7 +83,7 @@ export class MediaTypeParameters extends Map<string, string> {
 			throw new Error(`Invalid media type parameter name/value: ${name}/${value}`);
 		}
 
-		super.set(name.toLowerCase(), value);
+		super.set(asciiLower(name), value);
 
 		return this;
 	}
@@ -80,7 +95,7 @@ export class MediaTypeParameters extends Map<string, string> {
 	 * @returns true if the parameter existed and has been removed, or false if the parameter does not exist.
 	 */
 	override delete(name: string): boolean {
-		return super.delete(name.toLowerCase());
+		return super.delete(asciiLower(name));
 	}
 
 	/**
@@ -89,7 +104,20 @@ export class MediaTypeParameters extends Map<string, string> {
 	 * @returns The string representation of the media type parameters.
 	 */
 	override toString(): string {
-		return Array.from(this).map(([ name, value ]) => `;${name}=${!value || !httpTokenCodePoints.test(value) ? `"${value.replace(matcher, '\\$1')}"` : value}`).join('');
+		let out = '';
+		for (const [ name, value ] of this) {
+			out += ';';
+			out += name;
+			out += '=';
+			if (value.length === 0 || !httpTokenCodePoints.test(value)) {
+				out += '"';
+				out += value.replace(matcher, '\\$1');
+				out += '"';
+			} else {
+				out += value;
+			}
+		}
+		return out;
 	}
 
 	/**

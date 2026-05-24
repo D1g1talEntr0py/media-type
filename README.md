@@ -52,9 +52,8 @@ console.assert(mediaType.parameters.get('charset') == 'utf-8');
 mediaType.parameters.set('charset', 'windows-1252');
 console.assert(mediaType.parameters.get('charset') == 'windows-1252');
 console.assert(mediaType.toString() == 'text/html;charset=windows-1252');
-// Still considering changing this to maybe 'includes' or 'contains'
-console.assert(mediaType.matches('html') == true);
-console.assert(mediaType.matches('xml') == false);
+console.assert(mediaType.matches('text/html') == true);
+console.assert(mediaType.matches('text/xml') == false);
 ```
 
 Parsing is a fairly complex process; see [the specification](https://mimesniff.spec.whatwg.org/#parsing-a-mime-type) for details (and similarly [for serialization](https://mimesniff.spec.whatwg.org/#serializing-a-mime-type)).
@@ -83,7 +82,7 @@ if (mimeType.isHTML()) { /* ... */ }
 // New (@d1g1tal/media-type v5.x)
 import { MediaType } from '@d1g1tal/media-type';
 const mediaType = new MediaType('text/html');
-if (mediaType.essence === 'text/html' || mediaType.matches('html')) { /* ... */ }
+if (mediaType.essence === 'text/html' || mediaType.matches('text/html')) { /* ... */ }
 ```
 
 ## `MediaType` API
@@ -101,7 +100,7 @@ As an alternative to the constructor, you can use `MediaType.parse(string)`. The
 - `essence`: the media type's [essence](https://mimesniff.spec.whatwg.org/#mime-type-essence), e.g. `'text/html'`
 - `parameters`: an instance of `MediaTypeParameters`, containing this media type's [parameters](https://mimesniff.spec.whatwg.org/#mime-type-parameters)
 
-`type` and `subtype` can be changed. They will be validated to be non-empty and only contain [HTTP token code points](https://mimesniff.spec.whatwg.org/#http-token-code-point).
+`type` and `subtype` are read-only properties exposed via getters.
 
 `essence` is only a getter, and cannot be changed.
 
@@ -111,7 +110,7 @@ As an alternative to the constructor, you can use `MediaType.parse(string)`. The
 
 - **`toString()`**: Serializes the media type to a string
 - **`matches(mediaType: MediaType | string)`**: Checks if the media type matches the specified type
-  - When passed a string: checks if the essence includes that string (e.g., `mediaType.matches('html')` returns `true` for `text/html`)
+  - When passed a string: checks exact essence equality (e.g., `mediaType.matches('text/html')` returns `true`)
   - When passed a `MediaType` instance: performs exact type/subtype comparison
 
 ## `MediaTypeParameters` API
@@ -139,7 +138,7 @@ console.assert(mediaType.parameters.get('A') === 'b');
 
 mediaType.parameters.set('Q', 'X');
 console.assert(mediaType.parameters.get('q') === 'X');
-console.assert(mediaType.toString() === 'x/x;a=b;c=d;e=F;q=X');
+console.assert(mediaType.toString() === "x/x;a=b;c=D;e='F';q=X");
 
 // Throws:
 mediaType.parameters.set('@', 'x');
