@@ -213,7 +213,7 @@ The original contributors' excellent work is acknowledged with gratitude. This f
 
 ## License
 
-ISC License - see [LICENSE](./LICENSE) file for details.
+MIT License - see [LICENSE](./LICENSE) file for details.
 
 The original `whatwg-mimetype` package was licensed under MIT.
 
