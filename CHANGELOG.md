@@ -1,3 +1,38 @@
+## [7.0.0](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.8...v7.0.0) (2026-05-24)
+
+### ⚠ BREAKING CHANGES
+
+* **core:** The `matches()` method now checks strict equality of the media type essence rather than performing a substring match. Additionally, `type` and `subtype` properties are now exposed as read-only getters.
+
+### Performance Improvements
+
+* **core:** optimize parsing, serialization, and property access (f7f4479daf26d56184b0138f63bbc0adc19806db)
+Improves parsing throughput and lowers memory footprint by switching to manual string iteration over allocating array splits/RegExp matches. Caches the computed essence and utilizes private properties to avoid object mutations post-instantiation. 
+
+
+### Documentation
+
+* update license attribution to MIT (8f08552cf071dd6a6966c4f7f132e281011a6f78)
+Modifies the README to clarify that the package is released under the MIT License instead of ISC.
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** update development dependencies (1a377daf3c2d675738cde5214d5a961222793488)
+Updates several development dependencies to their latest versions, including `@d1g1tal/tsbuild`, `@types/node`, `@typescript-eslint` packages, and `vitest` packages. This ensures the project uses up-to-date tooling with the latest features and bug fixes.
+
+* **deps:** update dependencies, package manager, and CI workflows (67a99a633cb2814a59a70508ff4a854ff8a3631f)
+Bumps package manager and updates various development dependencies to their latest versions to maintain security and stability. Aligns GitHub Actions workflows to use updated setup actions.
+
+
+### Tests
+
+* **bench:** add benchmarking suite and result documentation (8e1a687425e6c1667e35d0fb9162e446af3549fe)
+Introduces a comprehensive benchmark directory employing `mitata` for rigorous performance tracking against competing implementations. Adds tracking output to demonstrate throughput gains and memory allocation improvements.
+
+* rename parse test file for clarity (a41b2ec3b05d42e6135c2ee9f6389fb90495794f)
+Renames `parse.test.ts` to `media-type-parser.test.ts` to better reflect the subject of the tests and align with project naming conventions.
+
 ## [6.0.8](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.7...v6.0.8) (2026-04-07)
 
 ### Bug Fixes
