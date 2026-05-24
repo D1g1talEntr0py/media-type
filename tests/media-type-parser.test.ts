@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { MediaTypeParser } from '../src/media-type-parser';
 import { MediaTypeParameters } from '../src/media-type-parameters';
 
-describe('parse', () => {
+describe('media-type-parser', () => {
 	it('should parse a media type', () => {
 		const parsed = MediaTypeParser.parse('text/html');
 		expect(parsed).toEqual({
