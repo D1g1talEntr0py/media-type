@@ -19,14 +19,15 @@
 		}
 	],
 	"engines": {
-		"node": ">=20.16.0"
+		"node": ">=22.22.0"
 	},
-	"packageManager": "pnpm@11.3.0",
+	"packageManager": "pnpm@11.20.0",
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
 		"access": "public"
 	},
 	"type": "module",
+	"types": "./dist/media-type.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/media-type.d.ts",
