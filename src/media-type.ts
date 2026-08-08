@@ -82,7 +82,12 @@ export class MediaType {
 	 * @returns true if the media type matches the specified type, false otherwise.
 	 */
 	matches(mediaType: MediaType | string): boolean {
-		return typeof mediaType === 'string' ? this.#essence === mediaType : this.#type === mediaType.#type && this.#subtype === mediaType.#subtype;
+		if (typeof mediaType === 'string') {
+			const normalizedMediaType = mediaType.toLowerCase();
+			return this.essence === normalizedMediaType || this.#type === normalizedMediaType || this.#subtype === normalizedMediaType;
+		}
+
+		return this.#type === mediaType.#type && this.#subtype === mediaType.#subtype;
 	}
 
 	/**

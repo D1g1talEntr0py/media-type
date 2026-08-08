@@ -172,6 +172,12 @@ describe('matches', () => {
 		const mediaType = new MediaType('text/html; charset=utf-8');
 		expect(mediaType.matches(new MediaType('text/html'))).toBe(true);
 	});
+
+	it('should not match partial strings', () => {
+		const mediaType = new MediaType('text/plain');
+		expect(mediaType.matches('text/pl')).toBe(false);
+		expect(mediaType.matches('plain')).toBe(true);
+	});
 });
 
 describe('Symbol.toStringTag', () => {
