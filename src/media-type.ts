@@ -38,13 +38,7 @@ export class MediaType {
 	 * @returns The parsed media type or null if the mediaType cannot be parsed.
 	 */
 	static parse(mediaType: string): MediaType | null {
-		try {
-			return new MediaType(mediaType);
-		} catch {
-			// ignore
-		}
-
-		return null;
+		try { return new MediaType(mediaType) } catch { return null }
 	}
 
 	/**
