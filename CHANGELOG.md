@@ -1,3 +1,34 @@
+## [7.0.1](https://github.com/D1g1talEntr0py/media-type/compare/v7.0.0...v7.0.1) (2026-08-08)
+* **ci:** resolved broken pnpm-lock.yaml (ab71f53b4b9a32adb19a239ce93bc38f87450aa7)
+* **parser:** prevent partial string matches (eae0376556ed3553d3389a3a971ceba62a6b9dd9)
+- Replaces permissive substring checks with exact normalized matching.
+- Avoids false positives from truncated input.
+- Adds regression coverage for partial and subtype-only cases.
+
+* **ci:** refresh workflow runtimes and actions (42e7397efda38a6e821f79f02e83196c3a8c286f)
+- Updates automation actions to current major releases.
+- Moves runtime matrix forward to actively supported versions.
+- Keeps coverage upload behavior aligned with the matrix policy.
+
+* **package:** align runtime metadata and workspace policy (793fadc195c44d8eb72874229fe61bf0a87e1825)
+- Updates engine and package-manager metadata to current project expectations.
+- Adds top-level type entry for clearer consumer resolution.
+- Adapts workspace build-allow policy to current package-manager format.
+
+* **parser:** harden media type encapsulation (0168d5e43fbd754a117578f62c82654a1782c9be)
+- Converts internal state and helpers to hard-private members.
+- Reduces accidental external coupling to parser internals.
+- Simplifies internal control flow while preserving public behavior.
+
+* **repo:** normalize local development settings (537f04bf1d05fa1606313a8680037df3fd508379)
+- Removes platform-specific hook mode variance.
+- Trims editor-only project settings to reduce repository noise.
+
+* **tooling:** migrate lint and dependency toolchain (2fb107c726df3564e5405ba61ea31c48801ac7cc)
+- Moves lint configuration to the newer integrated typescript stack.
+- Updates lint invocation and compiler options for compatibility.
+- Refreshes development dependencies and lock data for deterministic installs.
+
 ## [7.0.0](https://github.com/D1g1talEntr0py/media-type/compare/v6.0.8...v7.0.0) (2026-05-24)
 
 ### ⚠ BREAKING CHANGES
