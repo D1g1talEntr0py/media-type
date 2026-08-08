@@ -9,7 +9,6 @@
 		"allowUnreachableCode": false,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
-		"stableTypeOrdering": true,
 		"noUncheckedIndexedAccess": true,
 		"resolveJsonModule": true,
 		"rootDir": "./src",
