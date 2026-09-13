@@ -21,7 +21,7 @@
 	"engines": {
 		"node": ">=22.22.0"
 	},
-	"packageManager": "pnpm@11.20.0",
+	"packageManager": "pnpm@12.4.1",
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
 		"access": "public"
@@ -48,28 +48,27 @@
 		"pretest": "node tests/scripts/get-latest-platform-tests.ts",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"test:ui": "vitest run --ui",
 		"test:coverage": "vitest run --coverage",
 		"benchmark": "pnpm build && node --import ./benchmarks/cdn-preload.ts benchmarks/benchmark.ts && node --expose-gc benchmarks/memory.ts"
 	},
 	"devDependencies": {
-		"@d1g1tal/tsbuild": "^2.2.4",
+		"@d1g1tal/tsbuild": "^3.0.2",
 		"@eslint/js": "^10.0.1",
 		"@exodus/bytes": "^1.15.1",
-		"@types/node": "^26.2.0",
-		"@typescript/lib-dom": "npm:@types/web@^0.0.354",
+		"@types/node": "^26.5.1",
+		"@typescript/lib-dom": "npm:@types/web@^0.0.356",
 		"@typescript/native": "npm:typescript@^7.0.2",
-		"@vitest/coverage-v8": "4.1.10",
-		"@vitest/ui": "^4.1.10",
-		"eslint": "^10.8.0",
-		"eslint-plugin-jsdoc": "^63.3.3",
+		"@vitest/coverage-v8": "5.0.0",
+		"@vitest/ui": "^5.0.0",
+		"eslint": "^10.10.0",
+		"eslint-plugin-jsdoc": "^64.3.10",
 		"printable-string": "^0.3.0",
 		"typescript": "npm:@typescript/typescript6@^6.0.2",
-		"typescript-eslint": "^8.66.0",
-		"vitest": "^4.1.10"
+		"typescript-eslint": "^8.70.0",
+		"vitest": "^5.0.0"
 	},
 	"browserslist": [
-		"defaults and fully supports es6-module",
+		"defaults and fully supports es6",
 		"maintained node versions"
 	],
 	"keywords": [
