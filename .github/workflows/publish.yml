@@ -25,6 +25,6 @@ jobs:
           cache: pnpm
       - run: sudo npm install -g npm@latest
       - run: pnpm install --frozen-lockfile
-      - run: npx -y -p semantic-release -p @semantic-release/changelog -p @semantic-release/git -p @semantic-release/exec -p conventional-changelog-conventionalcommits semantic-release
+      - run: npx -y -p semantic-release -p @semantic-release/changelog -p @semantic-release/git -p @semantic-release/exec semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
