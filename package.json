@@ -50,7 +50,7 @@
 		"test:watch": "vitest",
 		"test:ui": "vitest run --ui",
 		"test:coverage": "vitest run --coverage",
-		"benchmark": "pnpm build && node --import ./benchmarks/cdn-preload.ts benchmarks/benchmark.ts"
+		"benchmark": "pnpm build && node --import ./benchmarks/cdn-preload.ts benchmarks/benchmark.ts && node --expose-gc benchmarks/memory.ts"
 	},
 	"devDependencies": {
 		"@d1g1tal/tsbuild": "^2.2.4",

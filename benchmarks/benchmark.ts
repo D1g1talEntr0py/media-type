@@ -9,7 +9,11 @@ let sink = 0;
  * Consumes a string value by XORing its length into the `sink` variable. This is used to prevent the JavaScript engine's JIT compiler from optimizing away code that produces values we want to benchmark, while still allowing us to read the final result after all benchmarks have run to ensure the operations are not treated as dead code.
  * @param value The string value to consume.
  */
-const consumeString = (value: string): void => { sink ^= value.length };
+const consumeString = (value: string): void => {
+	sink ^= value.length;
+	sink ^= value.charCodeAt(0);
+	sink ^= value.charCodeAt(value.length - 1);
+};
 /**
  * Consumes a boolean value by XORing 1 if true or 0 if false into the `sink` variable.
  * @param value The boolean value to consume.
@@ -31,6 +35,8 @@ const messyWhitespace = '   text/html ;  charset=utf-8 ;  foo=bar  ';
 const quoted = 'multipart/form-data; boundary="abc123"; name="payload"';
 const quotedEscaped = 'multipart/form-data; boundary="a\\"b\\\\c"; name="x"';
 const longValue = `text/plain;data=${'x'.repeat(512)};extra=${'y'.repeat(256)}`;
+const longEscapedValue = `text/plain;data="\\a${'x'.repeat(8192)}"`;
+const longSubtypeWhitespace = `application/${'x'.repeat(1024)} ;foo=bar`;
 const mixedCase = 'TeXT/HtML;CharSet="UTF-8";Foo=Bar';
 
 // Pre-parsed instances for serialization / matching benches
@@ -136,7 +142,10 @@ group('parse - quoted with escapes', () => {
 			const parsed = new WhatwgMimeType(quotedEscaped);
 			consumeString(parsed.essence);
 		});
-		// content-type throws on backslash-escape sequences in some inputs; skip it here.
+		bench('content-type', () => {
+			const parsed = contentType.parse(quotedEscaped);
+			consumeString(parsed.type);
+		});
 	});
 });
 
@@ -154,6 +163,20 @@ group('parse - long values (>500 chars)', () => {
 			const parsed = contentType.parse(longValue);
 			consumeString(parsed.type);
 		});
+	});
+});
+
+group('parse - long escaped value (>8 KiB)', () => {
+	bench('@d1g1tal/media-type', () => {
+		const parsed = new MediaType(longEscapedValue);
+		consumeString(parsed.parameters.get('data') ?? '');
+	});
+});
+
+group('parse - long subtype with trailing whitespace', () => {
+	bench('@d1g1tal/media-type', () => {
+		const parsed = new MediaType(longSubtypeWhitespace);
+		consumeString(parsed.subtype);
 	});
 });
 
@@ -202,6 +225,20 @@ group('parameter lookup (get)', () => {
 	bench('@d1g1tal/media-type', () => consumeString(sampleMt.parameters.get('charset') ?? ''));
 	bench('whatwg-mimetype', () => consumeString(sampleWhatwg.parameters.get('charset') ?? ''));
 });
+
+for (const valueLength of [512, 8192]) {
+	const values = ['x'.repeat(valueLength), 'y'.repeat(valueLength)];
+	const parameters = new MediaType('text/plain').parameters;
+	const serializable = values.map((value) => new MediaType('text/plain', { data: value }));
+
+	group(`long parameter value (${valueLength} chars)`, () => {
+		bench('set', () => {
+			parameters.set('data', values[sink & 1]!);
+			consumeNumber(parameters.size);
+		});
+		bench('serialize', () => consumeString(serializable[sink & 1]!.toString()));
+	});
+}
 
 // ---------------------------------------------------------------------------
 // Run with memory tracking enabled
