@@ -24,10 +24,9 @@ export class MediaType {
 			if (parameters === null || typeof parameters !== 'object' || Array.isArray(parameters)) {
 				throw new TypeError('The parameters argument must be an object');
 			}
-			for (const name in parameters) {
-				if (Object.prototype.hasOwnProperty.call(parameters, name)) {
-					this.#parameters.set(name, parameters[name]!);
-				}
+
+			for (const [ name, value ] of Object.entries(parameters)) {
+				this.#parameters.set(name, value);
 			}
 		}
 	}
@@ -84,7 +83,7 @@ export class MediaType {
 	matches(mediaType: MediaType | string): boolean {
 		if (typeof mediaType === 'string') {
 			const normalizedMediaType = mediaType.toLowerCase();
-			return this.essence === normalizedMediaType || this.#type === normalizedMediaType || this.#subtype === normalizedMediaType;
+			return this.#essence === normalizedMediaType || this.#type === normalizedMediaType || this.#subtype === normalizedMediaType;
 		}
 
 		return this.#type === mediaType.#type && this.#subtype === mediaType.#subtype;

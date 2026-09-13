@@ -1,19 +1,8 @@
 import { MediaTypeParameters } from './media-type-parameters.js';
-import { httpTokenCodePoints } from './utils.js';
+import { HTTP_QUOTED_VALUE_TABLE, HTTP_TOKEN_TABLE, isHttpWhitespace } from './utils.js';
 
-/**
- *  HTTP whitespace code points: SP (0x20), HT (0x09), LF (0x0A), CR (0x0D)
- * @see https://fetch.spec.whatwg.org/#http-whitespace
- * @param c The code point to check.
- * @returns true if the code point is HTTP whitespace, false otherwise.
- */
-const isHttpWhitespace = (c: number): boolean => c === 0x20 || c === 0x09 || c === 0x0A || c === 0x0D;
-
-// Direct references to Map.prototype methods so we can bypass the validation/lowercase
-// performed by MediaTypeParameters.set when we already know the key is lowercased and
-// the name/value pair has been validated.
-const mapSet = Map.prototype.set as <K, V>(this: Map<K, V>, key: K, value: V) => Map<K, V>;
-const mapHas = Map.prototype.has as <K>(this: Map<K, unknown>, key: K) => boolean;
+const mapHas = Map.prototype.has;
+const mapSet = Map.prototype.set;
 
 export interface MediaTypeComponent {
 	position?: number;
@@ -34,7 +23,9 @@ export interface ParsedMediaType {
  * @author D1g1talEntr0py <jason.dimeo@gmail.com>
  */
 export class MediaTypeParser {
-	private constructor() {}
+	private constructor() {
+		throw new Error('MediaTypeParser is a static class and cannot be instantiated');
+	}
 
 	/**
 	 * Function to parse a media type.
@@ -45,39 +36,83 @@ export class MediaTypeParser {
 		// Strip leading/trailing HTTP whitespace without an extra allocation when not needed.
 		let start = 0;
 		let end = input.length;
+
 		while (start < end && isHttpWhitespace(input.charCodeAt(start))) { start++ }
+
 		while (end > start && isHttpWhitespace(input.charCodeAt(end - 1))) { end-- }
+
 		if (start !== 0 || end !== input.length) { input = input.slice(start, end) }
 
 		const length = input.length;
 		let position = 0;
 
-		// Collect type up to '/'
-		while (position < length && input.charCodeAt(position) !== 0x2F /* / */) { position++ }
-		if (position === 0 || position >= length) {
+		// Collect type up to '/' with fused token validation and uppercase detection
+		let typeHasUpper = false;
+		let typeValid = true;
+
+		while (position < length) {
+			const c = input.charCodeAt(position);
+			if (c === 0x2F /* / */) break;
+			if (c >= 128) {
+				typeValid = false;
+			} else {
+				const flag = HTTP_TOKEN_TABLE[c];
+				if (flag === 0) {
+					typeValid = false;
+				} else if (flag === 2) {
+					typeHasUpper = true;
+				}
+			}
+			position++;
+		}
+
+		if (position === 0 || position >= length || !typeValid) {
 			throw new TypeError(MediaTypeParser.#generateErrorMessage('type', input.slice(0, position)));
 		}
-		let type = input.slice(0, position);
-		if (!httpTokenCodePoints.test(type)) {
-			throw new TypeError(MediaTypeParser.#generateErrorMessage('type', type));
-		}
-		type = type.toLowerCase();
+
+		const type = typeHasUpper ? input.slice(0, position).toLowerCase() : input.slice(0, position);
 
 		position++; // Skip "/"
 
 		// Collect subtype up to ';' (with trailing whitespace trim)
 		const subtypeStart = position;
-		while (position < length && input.charCodeAt(position) !== 0x3B /* ; */) { position++ }
+		let subtypeHasUpper = false;
+		let subtypeValid = true;
+		let subtypeInvalidAt = -1;
+
+		while (position < length) {
+			const c = input.charCodeAt(position);
+			if (c === 0x3B /* ; */) break;
+			if (c >= 128) {
+				subtypeValid = false;
+				if (subtypeInvalidAt === -1) { subtypeInvalidAt = position }
+			} else {
+				const flag = HTTP_TOKEN_TABLE[c];
+				if (flag === 0) {
+					subtypeValid = false;
+					if (subtypeInvalidAt === -1) { subtypeInvalidAt = position }
+				} else if (flag === 2) {
+					subtypeHasUpper = true;
+				}
+			}
+			position++;
+		}
+
 		let subtypeEnd = position;
-		while (subtypeEnd > subtypeStart && isHttpWhitespace(input.charCodeAt(subtypeEnd - 1))) { subtypeEnd-- }
-		if (subtypeEnd === subtypeStart) {
-			throw new TypeError(MediaTypeParser.#generateErrorMessage('subtype', ''));
+
+		if (!subtypeValid) {
+			while (subtypeEnd > subtypeStart && isHttpWhitespace(input.charCodeAt(subtypeEnd - 1))) { subtypeEnd-- }
+			if (subtypeEnd === subtypeStart) {
+				throw new TypeError(MediaTypeParser.#generateErrorMessage('subtype', ''));
+			}
+			subtypeValid = subtypeInvalidAt >= subtypeEnd;
 		}
-		let subtype = input.slice(subtypeStart, subtypeEnd);
-		if (!httpTokenCodePoints.test(subtype)) {
-			throw new TypeError(MediaTypeParser.#generateErrorMessage('subtype', subtype));
+
+		if (subtypeEnd === subtypeStart || !subtypeValid) {
+			throw new TypeError(MediaTypeParser.#generateErrorMessage('subtype', input.slice(subtypeStart, subtypeEnd)));
 		}
-		subtype = subtype.toLowerCase();
+
+		const subtype = subtypeHasUpper ? input.slice(subtypeStart, subtypeEnd).toLowerCase() : input.slice(subtypeStart, subtypeEnd);
 
 		const parameters = new MediaTypeParameters();
 
@@ -87,48 +122,87 @@ export class MediaTypeParser {
 			// Skip leading HTTP whitespace
 			while (position < length && isHttpWhitespace(input.charCodeAt(position))) { position++ }
 
-			// Collect parameter name up to ';' or '='
+			// Collect parameter name up to ';' or '=' with fused validation and uppercase detection
 			const nameStart = position;
+			let nameHasUpper = false;
+			let nameValid = true;
+
 			while (position < length) {
 				const c = input.charCodeAt(position);
 				if (c === 0x3B /* ; */ || c === 0x3D /* = */) break;
+				if (c >= 128) {
+					nameValid = false;
+				} else {
+					const flag = HTTP_TOKEN_TABLE[c];
+					if (flag === 0) {
+						nameValid = false;
+					} else if (flag === 2) {
+						nameHasUpper = true;
+					}
+				}
 				position++;
 			}
-			const nameRaw = nameStart === position ? '' : input.slice(nameStart, position);
 
-			if (position >= length || input.charCodeAt(position) === 0x3B) { continue }
+			const nameLength = position - nameStart;
+			if (nameLength === 0) {
+				nameValid = false;
+			}
+
+			if (position >= length || input.charCodeAt(position) === 0x3B /* ; */) { continue }
 
 			position++; // Skip "="
 
 			let value: string;
+			let valValid = true;
+
 			if (position < length && input.charCodeAt(position) === 0x22 /* " */) {
 				position = MediaTypeParser.#collectHttpQuotedString(input, position, length);
 				value = MediaTypeParser.#lastQuoted;
+				valValid = MediaTypeParser.#lastQuotedValid;
+				MediaTypeParser.#lastQuoted = '';
 				// Advance to next ';'
 				const semi = input.indexOf(';', position);
 				position = semi === -1 ? length : semi;
 			} else {
 				const valStart = position;
-				while (position < length && input.charCodeAt(position) !== 0x3B) { position++ }
+				while (position < length && input.charCodeAt(position) !== 0x3B /* ; */) {
+					const c = input.charCodeAt(position);
+					if (c > 0xFF || HTTP_QUOTED_VALUE_TABLE[c] === 0) {
+						valValid = false;
+					}
+					position++;
+				}
 				let valEnd = position;
 				while (valEnd > valStart && isHttpWhitespace(input.charCodeAt(valEnd - 1))) { valEnd-- }
 				if (valEnd === valStart) { continue }
+				if (!valValid) {
+					valValid = true;
+					for (let i = valStart; i < valEnd; i++) {
+						const c = input.charCodeAt(i);
+						if (c > 0xFF || HTTP_QUOTED_VALUE_TABLE[c] === 0) {
+							valValid = false;
+							break;
+						}
+					}
+				}
 				value = input.slice(valStart, valEnd);
 			}
 
-			if (nameRaw.length !== 0 && MediaTypeParameters.isValid(nameRaw, value)) {
-				const lower = nameRaw.toLowerCase();
-				if (!mapHas.call(parameters, lower)) {
-					mapSet.call(parameters, lower, value);
-				}
+			if (nameValid && valValid) {
+				const name = nameHasUpper ? input.slice(nameStart, nameStart + nameLength).toLowerCase() : input.slice(nameStart, nameStart + nameLength);
+
+				// Direct references to Map.prototype methods so we can bypass the validation/lowercase performed by
+				// MediaTypeParameters.set when we already know the key is lowercased and the name/value pair has been validated.
+				if (!mapHas.call(parameters, name)) { mapSet.call(parameters, name, value) }
 			}
 		}
 
 		return { type, subtype, parameters };
 	}
 
-	// Scratch slot for the quoted-string value to avoid allocating a tuple per call.
+	// Scratch slots for the quoted-string value and validity to avoid allocating a tuple per call.
 	static #lastQuoted: string = '';
+	static #lastQuotedValid: boolean = true;
 
 	/**
 	 * Collects an HTTP quoted-string starting at `position` (which points at the opening `"`).
@@ -145,35 +219,60 @@ export class MediaTypeParser {
 
 		// Fast path: scan for '"' or '\\' — most quoted strings have neither.
 		const start = position;
+		let valValid = true;
+
 		while (position < length) {
 			const c = input.charCodeAt(position);
-			if (c === 0x22 /* " */ || c === 0x5C /* \ */) break;
+
+			if (c === 0x22 /* " */ || c === 0x5C /* \ */) { break }
+
+			if (c > 0xFF || HTTP_QUOTED_VALUE_TABLE[c] === 0) {
+				valValid = false;
+			}
+
 			position++;
 		}
 
 		if (position >= length) {
 			MediaTypeParser.#lastQuoted = input.slice(start, position);
+			MediaTypeParser.#lastQuotedValid = valValid;
 			return position;
 		}
 		if (input.charCodeAt(position) === 0x22) {
 			MediaTypeParser.#lastQuoted = input.slice(start, position);
+			MediaTypeParser.#lastQuotedValid = valValid;
 			return position + 1;
 		}
 
-		// Slow path: at least one backslash. Build the rest.
-		let value = input.slice(start, position);
+		// Slow path: append contiguous spans between escapes.
+		let value = '';
+		let segmentStart = start;
 		while (position < length) {
 			const c = input.charCodeAt(position);
-			if (c === 0x22 /* " */) { position++; break }
-			if (c === 0x5C /* \ */ && position + 1 < length) {
+			if (c === 0x22 /* " */) {
+				value += input.slice(segmentStart, position);
 				position++;
-				value += input[position];
+				segmentStart = position;
+				break;
+			}
+			if (c === 0x5C /* \ */ && position + 1 < length) {
+				value += input.slice(segmentStart, position);
+				position++;
+				segmentStart = position;
+				const nextCode = input.charCodeAt(position);
+				if (nextCode > 0xFF || HTTP_QUOTED_VALUE_TABLE[nextCode] === 0) {
+					valValid = false;
+				}
 			} else {
-				value += input[position];
+				if (c > 0xFF || HTTP_QUOTED_VALUE_TABLE[c] === 0) {
+					valValid = false;
+				}
 			}
 			position++;
 		}
+		value += input.slice(segmentStart, position);
 		MediaTypeParser.#lastQuoted = value;
+		MediaTypeParser.#lastQuotedValid = valValid;
 		return position;
 	}
 

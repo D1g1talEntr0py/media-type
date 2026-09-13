@@ -1,22 +1,6 @@
-import { httpTokenCodePoints } from './utils.js';
+import { asciiLower, isHttpQuotedStringToken, isHttpToken } from './utils.js';
 
 const matcher: RegExp = /(["\\])/ug;
-const httpQuotedStringTokenCodePoints: RegExp = /^[\t\u0020-\u007E\u0080-\u00FF]*$/u;
-
-/**
- * Returns the ASCII-lowercased version of `s`, or `s` itself when no characters
- * require lowering. Avoids allocating a new string when input is already lowercase.
- * @param s The string to lowercase.
- * @returns The ASCII-lowercased version of `s`.
- */
-const asciiLower = (s: string): string => {
-	for (let i = 0, length = s.length; i < length; i++) {
-		const c = s.charCodeAt(i);
-		if (c >= 0x41 && c <= 0x5A) { return s.toLowerCase() }
-	}
-
-	return s;
-};
 
 /**
  * Class representing the parameters for a media type record.
@@ -35,8 +19,12 @@ export class MediaTypeParameters extends Map<string, string> {
 	 *
 	 * @param entries An array of [ name, value ] tuples.
 	 */
-	constructor(entries: Iterable<[string, string]> = []) {
-		super(entries);
+	constructor(entries?: Iterable<[string, string]>) {
+		if (entries !== undefined) {
+			super(entries);
+		} else {
+			super();
+		}
 	}
 
 	/**
@@ -47,7 +35,7 @@ export class MediaTypeParameters extends Map<string, string> {
 	 * @returns true if the media type parameter is valid, false otherwise.
 	 */
 	static isValid(name: string, value: string): boolean {
-		return httpTokenCodePoints.test(name) && httpQuotedStringTokenCodePoints.test(value);
+		return isHttpToken(name) && isHttpQuotedStringToken(value);
 	}
 
 	/**
@@ -109,9 +97,9 @@ export class MediaTypeParameters extends Map<string, string> {
 			out += ';';
 			out += name;
 			out += '=';
-			if (value.length === 0 || !httpTokenCodePoints.test(value)) {
+			if (value.length === 0 || !isHttpToken(value)) {
 				out += '"';
-				out += value.replace(matcher, '\\$1');
+				out += (value.includes('"') || value.includes('\\')) ? value.replace(matcher, '\\$1') : value;
 				out += '"';
 			} else {
 				out += value;
