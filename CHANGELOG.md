@@ -1,3 +1,5 @@
+## [7.0.2](https://github.com/D1g1talEntr0py/media-type/compare/v7.0.1...v7.0.2) (2026-09-13)
+
 ## [7.0.1](https://github.com/D1g1talEntr0py/media-type/compare/v7.0.0...v7.0.1) (2026-08-08)
 * **ci:** resolved broken pnpm-lock.yaml (ab71f53b4b9a32adb19a239ce93bc38f87450aa7)
 * **parser:** prevent partial string matches (eae0376556ed3553d3389a3a971ceba62a6b9dd9)
